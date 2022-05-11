@@ -2,26 +2,26 @@ import Foundation
 
 extension SankeyOptions {
     public init(
-        nodeColors: [String]? = nil, // Commmon
+        nodeColors: [String]? = nil,
         nodeColorMode: SankeyOptions.Sankey.Node.ColorMode = .unique,
         nodeWidth: Double? = nil,
         nodePadding: Double? = nil,
-        nodeLabelColor: String = "black", // Commmon
-        nodeLabelFontSize: Double = 30, // Commmon
+        nodeLabelColor: String = "black",
+        nodeLabelFontSize: Double = 40,
         nodeLabelFontName: String? = nil,
         nodeLabelBold: Bool = false,
         nodeLabelItalic: Bool = false,
         nodeLabelPadding: Double? = nil,
         nodeInteractivity: Bool = false,
         linkColors: [String]? = nil,
-        linkColorMode: SankeyOptions.Sankey.Link.ColorMode? = nil, // Commmon
-        linkColorFillOpacity: Double? = nil,
+        linkColorMode: SankeyOptions.Sankey.Link.ColorMode? = nil,
         linkColorFill: String? = nil,
+        linkColorFillOpacity: Double? = nil,
         linkColorStroke: String? = nil,
         linkColorStrokeWidth: Double = 0,
-        tooltipValueLabel: String = "", // Custom
-        tooltipTextColor: String = "black", // Commmon
-        tooltipTextFontSize: Double = 30, // Commmon
+        tooltipValueLabel: String = "",
+        tooltipTextColor: String = "black",
+        tooltipTextFontSize: Double = 40,
         tooltipTextFontName: String? = nil,
         tooltipTextBold: Bool = false,
         tooltipTextItalic: Bool = false,
@@ -48,8 +48,8 @@ extension SankeyOptions {
                 colors: linkColors,
                 colorMode: linkColorMode,
                 color: .init(
-                    fillOpacity: linkColorFillOpacity,
                     fill: linkColorFill,
+                    fillOpacity: linkColorFillOpacity,
                     stroke: linkColorStroke,
                     strokeWidth: linkColorStrokeWidth
                 )

@@ -1,65 +1,11 @@
 import SwiftUI
 import WebKit
 
+/// A SwiftUI-compatible Sankey Diagram (powered by Google Charts)
+/// - Important: Requires an Internet connection
 public struct SankeyDiagram: UIViewRepresentable {
-    @Binding public var links: [SankeyLink]
-    public var options: SankeyOptions
-    
-    public init(
-        _ links: Binding<[SankeyLink]>,
-        nodeColors: [String]? = nil,
-        nodeColorMode: SankeyOptions.Sankey.Node.ColorMode = .unique,
-        nodeWidth: Double? = nil,
-        nodePadding: Double? = nil,
-        nodeLabelColor: String = "black",
-        nodeLabelFontSize: Double = 30,
-        nodeLabelFontName: String? = nil,
-        nodeLabelBold: Bool = false,
-        nodeLabelItalic: Bool = false,
-        nodeLabelPadding: Double? = nil,
-        nodeInteractivity: Bool = false,
-        linkColors: [String]? = nil,
-        linkColorMode: SankeyOptions.Sankey.Link.ColorMode? = nil,
-        linkColorFillOpacity: Double? = nil,
-        linkColorFill: String? = nil,
-        linkColorStroke: String? = nil,
-        linkColorStrokeWidth: Double = 0,
-        tooltipValueLabel: String = "",
-        tooltipTextColor: String = "black",
-        tooltipTextFontSize: Double = 30,
-        tooltipTextFontName: String? = nil,
-        tooltipTextBold: Bool = false,
-        tooltipTextItalic: Bool = false,
-        layoutIterations: Int = 32
-    ) {
-        self._links = links
-        self.options = .init(
-            nodeColors: nodeColors,
-            nodeColorMode: nodeColorMode,
-            nodeWidth: nodeWidth,
-            nodePadding: nodePadding,
-            nodeLabelColor: nodeLabelColor,
-            nodeLabelFontSize: nodeLabelFontSize,
-            nodeLabelFontName: nodeLabelFontName,
-            nodeLabelBold: nodeLabelBold,
-            nodeLabelItalic: nodeLabelItalic,
-            nodeLabelPadding: nodeLabelPadding,
-            nodeInteractivity: nodeInteractivity,
-            linkColors: linkColors,
-            linkColorMode: linkColorMode,
-            linkColorFillOpacity: linkColorFillOpacity,
-            linkColorFill: linkColorFill,
-            linkColorStroke: linkColorStroke,
-            linkColorStrokeWidth: linkColorStrokeWidth,
-            tooltipValueLabel: tooltipValueLabel,
-            tooltipTextColor: tooltipTextColor,
-            tooltipTextFontSize: tooltipTextFontSize,
-            tooltipTextFontName: tooltipTextFontName,
-            tooltipTextBold: tooltipTextBold,
-            tooltipTextItalic: tooltipTextItalic,
-            layoutIterations: layoutIterations
-        )
-    }
+    public let links: [SankeyLink]
+    public let options: SankeyOptions
     
     public func makeUIView(context: Context) -> WKWebView {
         let webview = WKWebView()
@@ -126,13 +72,8 @@ struct SankeyDiagram_Previews: PreviewProvider {
         }
         
         func diagram(in geo: GeometryProxy) -> some View {
-            SankeyDiagram(
-                $links,
-                nodeLabelFontSize: 40,
-                linkColorMode: .source,
-                tooltipTextFontSize: 40
-            )
-            .frame(height: geo.size.height * 0.5)
+            SankeyDiagram(links, nodeLabelFontSize: 50, tooltipTextFontSize: 50)
+                .frame(height: geo.size.height * 0.5)
         }
     
         var addButton: some View {
