@@ -2,17 +2,23 @@ import Sankey
 import SwiftUI
 
 struct LabelStyleView: View {
+    let data = SankeyLink.countries
+    
     var body: some View {
+        diagram
+            .navigationTitle("Label Style")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var diagram: some View {
         SankeyDiagram(
-            SankeyLink.countries,
+            data,
             nodeLabelColor: "#871b47",
             nodeLabelFontSize: 24,
             nodeLabelFontName: "Times-Roman",
             nodeLabelBold: true,
             nodeLabelItalic: true
         )
-        .navigationTitle("Label Style")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

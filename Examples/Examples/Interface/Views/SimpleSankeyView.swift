@@ -3,6 +3,12 @@ import SwiftUI
 
 struct SimpleSankeyView: View {
     var body: some View {
+        diagram
+            .navigationTitle("Simple Sankey")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var diagram: some View {
         SankeyDiagram([
             ["A", "X", "5"],
             ["A", "Y", "7"],
@@ -11,8 +17,6 @@ struct SimpleSankeyView: View {
             ["B", "Y", "9"],
             ["B", "Z", "4"]
         ])
-        .navigationTitle("Simple Sankey")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

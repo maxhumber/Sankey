@@ -2,13 +2,19 @@ import Sankey
 import SwiftUI
 
 struct NodePaddingView: View {
+    let data = SankeyLink.countries
+    
     var body: some View {
+        diagram
+            .navigationTitle("Node Padding")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var diagram: some View {
         SankeyDiagram(
-            SankeyLink.countries,
+            data,
             nodeWidth: 3
         )
-        .navigationTitle("Node Padding")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

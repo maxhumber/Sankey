@@ -2,13 +2,19 @@ import Sankey
 import SwiftUI
 
 struct LabelPaddingView: View {
+    let data = SankeyLink.countries
+    
     var body: some View {
+        diagram
+            .navigationTitle("Label Padding")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var diagram: some View {
         SankeyDiagram(
-            SankeyLink.countries,
+            data,
             nodeLabelPadding: 30
         )
-        .navigationTitle("Label Padding")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

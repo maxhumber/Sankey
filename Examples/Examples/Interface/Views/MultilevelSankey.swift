@@ -2,10 +2,16 @@ import Sankey
 import SwiftUI
 
 struct MultilevelSankey: View {
+    let data = SankeyLink.countries
+    
     var body: some View {
-        SankeyDiagram(SankeyLink.countries)
+        diagram
             .navigationTitle("Multilevel Sankey")
             .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var diagram: some View {
+        SankeyDiagram(data)
     }
 }
 
