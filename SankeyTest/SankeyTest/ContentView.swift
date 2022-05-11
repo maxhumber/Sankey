@@ -74,7 +74,7 @@ struct WebView: UIViewRepresentable {
         configuration.userContentController = userContentController
         let wkwebview = WKWebView(frame: .zero, configuration: configuration)
         wkwebview.navigationDelegate = context.coordinator
-        wkwebview.loadHTMLString(sankeyHTML, baseURL: nil)
+        wkwebview.loadHTMLString(bridgeHTML, baseURL: nil)
         return wkwebview
     }
     
