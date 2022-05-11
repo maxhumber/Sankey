@@ -1,7 +1,7 @@
 import Sankey
 import SwiftUI
 
-struct GradientColorsView: View {
+struct GradientLinksView: View {
     let colors = [
         "#a6cee3", "#b2df8a", "#fb9a99", "#fdbf6f",
         "#cab2d6", "#ffff99", "#1f78b4", "#33a02c"
@@ -11,21 +11,16 @@ struct GradientColorsView: View {
         SankeyDiagram(
             SankeyLink.countries,
             nodeColors: colors,
-            nodeLabelFontSize: 24,
             linkColors: colors,
-            linkColorMode: .gradient,
-            tooltipTextFontSize: 24
+            linkColorMode: .gradient
         )
     }
 }
 
 struct ControllingColors_Previews: PreviewProvider {
     static var previews: some View {
-        GradientColorsView()
+        GradientLinksView()
             .previewInterfaceOrientation(.landscapeLeft)
-
-
-
     }
 }
 
