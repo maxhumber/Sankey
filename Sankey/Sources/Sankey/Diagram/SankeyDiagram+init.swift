@@ -3,7 +3,7 @@ import Foundation
 extension SankeyDiagram {
     /// Creates a Sankey Diagram
     /// - Parameters:
-    ///   - links: Data to render
+    ///   - data: Array of SankeyLink objects
     ///   - nodeColors: Custom color (hexcodes) palette to cycle through for sankey nodes
     ///   - nodeColorMode: Coloring mode for the sankey nodes
     ///   - nodeWidth: Thickness of the node
@@ -30,7 +30,7 @@ extension SankeyDiagram {
     ///   - layoutIterations: D3 layout engine layout search attempts to find the most optimal node positions (increasing this number may lead to more pleasing layouts of complex sankeys, at some cost)
     /// - Note: See the [Google Charts documentation](https://developers.google.com/chart/interactive/docs/gallery/sankey) for more info
     public init(
-        _ links: [SankeyLink],
+        _ data: [SankeyLink],
         nodeColors: [String]? = nil,
         nodeColorMode: SankeyOptions.Sankey.Node.ColorMode = .unique,
         nodeWidth: Double? = nil,
@@ -56,7 +56,7 @@ extension SankeyDiagram {
         tooltipTextItalic: Bool = false,
         layoutIterations: Int = 32
     ) {
-        self.links = links
+        self.data = data
         self.options = .init(
             nodeColors: nodeColors,
             nodeColorMode: nodeColorMode,

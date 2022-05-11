@@ -5,9 +5,10 @@ struct NodeWidthView: View {
     var body: some View {
         SankeyDiagram(
             SankeyLink.countries,
-            nodeLabelFontSize: 24,
-            nodeLabelPadding: 30
+            nodePadding: 40
         )
+        .navigationTitle("Node Width")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -1,18 +1,20 @@
 import Sankey
 import SwiftUI
 
-struct LabelPaddingView: View {
+struct NodePaddingView: View {
     var body: some View {
         SankeyDiagram(
             SankeyLink.countries,
-            nodeLabelPadding: 30
+            nodeWidth: 3
         )
+        .navigationTitle("Node Padding")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct CustomizingLabelPaddingView_Previews: PreviewProvider {
+struct NodePaddingView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelPaddingView()
+        NodePaddingView()
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }

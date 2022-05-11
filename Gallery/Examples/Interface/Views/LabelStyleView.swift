@@ -11,6 +11,8 @@ struct LabelStyleView: View {
             nodeLabelBold: true,
             nodeLabelItalic: true
         )
+        .navigationTitle("Label Style")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

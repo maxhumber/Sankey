@@ -4,7 +4,7 @@ import WebKit
 /// A SwiftUI-compatible Sankey Diagram (powered by Google Charts)
 /// - Important: Requires an Internet connection
 public struct SankeyDiagram: UIViewRepresentable {
-    public let links: [SankeyLink]
+    public let data: [SankeyLink]
     public let options: SankeyOptions
     
     public func makeUIView(context: Context) -> WKWebView {
@@ -31,7 +31,7 @@ public struct SankeyDiagram: UIViewRepresentable {
                 data.addColumn('string', 'source');
                 data.addColumn('string', 'target');
                 data.addColumn('number', '\(options.tooltip.valueLabel)');
-                data.addRows(\(links));
+                data.addRows(\(data));
                 var chart = new google.visualization.Sankey(document.getElementById('chart'));
                 var options = \(options);
                 chart.draw(data, options);
@@ -48,11 +48,13 @@ public struct SankeyDiagram: UIViewRepresentable {
 
 struct SankeyDiagram_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        ReadMeView()
     }
     
-    struct Preview: View {
-        @State var links: [SankeyLink] = [
+    struct ReadMeView: View {
+        // Create some data
+        @State var data: [SankeyLink] = [
+            // Option A: ExpressibleByArrayLiteral init
             ["A", "X", "5"],
             ["A", "Y", "7"],
             ["A", "Z", "6"],
@@ -63,24 +65,30 @@ struct SankeyDiagram_Previews: PreviewProvider {
         
         var body: some View {
             GeometryReader { geo in
-                VStack {
-                    addButton
-                    diagram(in: geo)
-                    Text("More Content")
+                VStack(spacing: 20) {
+                    Text("Sankeys in SwiftUI!")
+                        .font(.title3.bold())
+                        .padding(.top, 20)
+                    // Native SwiftUI component
+                    SankeyDiagram(
+                        data,
+                        nodeLabelFontSize: 50,
+                        nodeInteractivity: true,
+                        linkColorMode: .gradient,
+                        tooltipTextFontSize: 50
+                    )
+                    // Will take up full View, unless you constrain it...
+                    .frame(height: geo.size.height * 0.5)
+                    Button {
+                        data.append(
+                            // Option B: Normal init
+                            SankeyLink(source: "C", target: "X", value: 3)
+                        )
+                    } label: {
+                        Text("Add a new link")
+                    }
+                    Text("Lorem Ipsum...")
                 }
-            }
-        }
-        
-        func diagram(in geo: GeometryProxy) -> some View {
-            SankeyDiagram(links, nodeLabelFontSize: 50, tooltipTextFontSize: 50)
-                .frame(height: geo.size.height * 0.5)
-        }
-    
-        var addButton: some View {
-            Button {
-                links.append(["C", "X", "5"])
-            } label: {
-                Text("Add")
             }
         }
     }

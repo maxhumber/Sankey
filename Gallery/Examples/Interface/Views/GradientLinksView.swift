@@ -14,10 +14,12 @@ struct GradientLinksView: View {
             linkColors: colors,
             linkColorMode: .gradient
         )
+        .navigationTitle("Gradient Links")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct ControllingColors_Previews: PreviewProvider {
+struct GradientLinksView_Previews: PreviewProvider {
     static var previews: some View {
         GradientLinksView()
             .previewInterfaceOrientation(.landscapeLeft)

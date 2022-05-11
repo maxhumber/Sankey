@@ -7,11 +7,11 @@ struct UniformColorView: View {
             SankeyLink.countries,
             nodeColors: ["#a61d4c"],
             nodeLabelColor: "#871b47",
-            nodeLabelFontSize: 24,
             linkColorFill: "#d799ae",
-            linkColorFillOpacity: 0.8,
-            tooltipTextFontSize: 24
+            linkColorFillOpacity: 0.8
         )
+        .navigationTitle("Uniform Color")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

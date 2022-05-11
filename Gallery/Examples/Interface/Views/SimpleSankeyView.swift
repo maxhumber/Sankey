@@ -1,7 +1,7 @@
 import Sankey
 import SwiftUI
 
-struct ASimpleExampleView: View {
+struct SimpleSankeyView: View {
     var body: some View {
         SankeyDiagram([
             ["A", "X", "5"],
@@ -11,11 +11,15 @@ struct ASimpleExampleView: View {
             ["B", "Y", "9"],
             ["B", "Z", "4"]
         ])
+        .navigationTitle("Simple Sankey")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct ASimpleExampleView_Previews: PreviewProvider {
+struct SimpleSankeyView_Previews: PreviewProvider {
     static var previews: some View {
-        ASimpleExampleView()
+        NavigationView {
+            SimpleSankeyView()
+        }
     }
 }

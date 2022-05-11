@@ -12,11 +12,15 @@
 		508E31E5282C205D0004BC7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 508E31E4282C205D0004BC7F /* Assets.xcassets */; };
 		508E31E8282C205D0004BC7F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 508E31E7282C205D0004BC7F /* Preview Assets.xcassets */; };
 		50A9A8F6282C227A006D8D55 /* SankeyLink+countries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8F5282C227A006D8D55 /* SankeyLink+countries.swift */; };
-		50A9A8FC282C2328006D8D55 /* GradientColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8F8282C2328006D8D55 /* GradientColorsView.swift */; };
-		50A9A8FD282C2328006D8D55 /* MultilevelSankeysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8F9282C2328006D8D55 /* MultilevelSankeysView.swift */; };
-		50A9A8FE282C2328006D8D55 /* ASimpleExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8FA282C2328006D8D55 /* ASimpleExampleView.swift */; };
+		50A9A8FC282C2328006D8D55 /* GradientLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8F8282C2328006D8D55 /* GradientLinksView.swift */; };
+		50A9A8FD282C2328006D8D55 /* MultilevelSankey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8F9282C2328006D8D55 /* MultilevelSankey.swift */; };
+		50A9A8FE282C2328006D8D55 /* SimpleSankeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A9A8FA282C2328006D8D55 /* SimpleSankeyView.swift */; };
 		50B64552282C266D00B0380C /* UniformColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B64551282C266D00B0380C /* UniformColorView.swift */; };
 		50B64554282C26CA00B0380C /* StrokedLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B64553282C26CA00B0380C /* StrokedLinksView.swift */; };
+		50B64556282C290300B0380C /* LabelStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B64555282C290300B0380C /* LabelStyleView.swift */; };
+		50B64558282C29A700B0380C /* LabelPaddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B64557282C29A700B0380C /* LabelPaddingView.swift */; };
+		50B6455A282C2A2D00B0380C /* NodeWidthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B64559282C2A2D00B0380C /* NodeWidthView.swift */; };
+		50B6455C282C2C4B00B0380C /* NodePaddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B6455B282C2C4B00B0380C /* NodePaddingView.swift */; };
 		50C87768282C212D00E584CD /* Sankey in Frameworks */ = {isa = PBXBuildFile; productRef = 50C87767282C212D00E584CD /* Sankey */; };
 /* End PBXBuildFile section */
 
@@ -27,12 +31,16 @@
 		508E31E4282C205D0004BC7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		508E31E7282C205D0004BC7F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		50A9A8F5282C227A006D8D55 /* SankeyLink+countries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SankeyLink+countries.swift"; sourceTree = "<group>"; };
-		50A9A8F8282C2328006D8D55 /* GradientColorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientColorsView.swift; sourceTree = "<group>"; };
-		50A9A8F9282C2328006D8D55 /* MultilevelSankeysView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilevelSankeysView.swift; sourceTree = "<group>"; };
-		50A9A8FA282C2328006D8D55 /* ASimpleExampleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASimpleExampleView.swift; sourceTree = "<group>"; };
+		50A9A8F8282C2328006D8D55 /* GradientLinksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientLinksView.swift; sourceTree = "<group>"; };
+		50A9A8F9282C2328006D8D55 /* MultilevelSankey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilevelSankey.swift; sourceTree = "<group>"; };
+		50A9A8FA282C2328006D8D55 /* SimpleSankeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleSankeyView.swift; sourceTree = "<group>"; };
 		50B64550282C253100B0380C /* Sankey */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Sankey; path = ../../../Sankey; sourceTree = "<group>"; };
 		50B64551282C266D00B0380C /* UniformColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformColorView.swift; sourceTree = "<group>"; };
 		50B64553282C26CA00B0380C /* StrokedLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokedLinksView.swift; sourceTree = "<group>"; };
+		50B64555282C290300B0380C /* LabelStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStyleView.swift; sourceTree = "<group>"; };
+		50B64557282C29A700B0380C /* LabelPaddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPaddingView.swift; sourceTree = "<group>"; };
+		50B64559282C2A2D00B0380C /* NodeWidthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeWidthView.swift; sourceTree = "<group>"; };
+		50B6455B282C2C4B00B0380C /* NodePaddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePaddingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +120,15 @@
 			isa = PBXGroup;
 			children = (
 				508E31E2282C205C0004BC7F /* IndexView.swift */,
-				50A9A8FA282C2328006D8D55 /* ASimpleExampleView.swift */,
-				50A9A8F9282C2328006D8D55 /* MultilevelSankeysView.swift */,
-				50A9A8F8282C2328006D8D55 /* GradientColorsView.swift */,
+				50A9A8FA282C2328006D8D55 /* SimpleSankeyView.swift */,
+				50A9A8F9282C2328006D8D55 /* MultilevelSankey.swift */,
+				50A9A8F8282C2328006D8D55 /* GradientLinksView.swift */,
 				50B64551282C266D00B0380C /* UniformColorView.swift */,
 				50B64553282C26CA00B0380C /* StrokedLinksView.swift */,
+				50B64555282C290300B0380C /* LabelStyleView.swift */,
+				50B64557282C29A700B0380C /* LabelPaddingView.swift */,
+				50B64559282C2A2D00B0380C /* NodeWidthView.swift */,
+				50B6455B282C2C4B00B0380C /* NodePaddingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,12 +222,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50A9A8FC282C2328006D8D55 /* GradientColorsView.swift in Sources */,
+				50B6455C282C2C4B00B0380C /* NodePaddingView.swift in Sources */,
+				50A9A8FC282C2328006D8D55 /* GradientLinksView.swift in Sources */,
 				50B64554282C26CA00B0380C /* StrokedLinksView.swift in Sources */,
-				50A9A8FD282C2328006D8D55 /* MultilevelSankeysView.swift in Sources */,
+				50A9A8FD282C2328006D8D55 /* MultilevelSankey.swift in Sources */,
+				50B64556282C290300B0380C /* LabelStyleView.swift in Sources */,
+				50B6455A282C2A2D00B0380C /* NodeWidthView.swift in Sources */,
 				508E31E3282C205C0004BC7F /* IndexView.swift in Sources */,
 				50A9A8F6282C227A006D8D55 /* SankeyLink+countries.swift in Sources */,
-				50A9A8FE282C2328006D8D55 /* ASimpleExampleView.swift in Sources */,
+				50A9A8FE282C2328006D8D55 /* SimpleSankeyView.swift in Sources */,
+				50B64558282C29A700B0380C /* LabelPaddingView.swift in Sources */,
 				508E31E1282C205C0004BC7F /* ExamplesApp.swift in Sources */,
 				50B64552282C266D00B0380C /* UniformColorView.swift in Sources */,
 			);
