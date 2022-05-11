@@ -2,15 +2,14 @@ import XCTest
 @testable import Sankey
 
 final class SankeyFlowTests: XCTestCase {
-    func testFlowAsString() throws {
-        let flow = SankeyLink(source: "A", target: "B", weight: 3)
-        XCTAssertEqual("\(flow)", "['A', 'B', 3.0]")
+    func testLinkAsString() {
+        let link = SankeyLink(source: "A", target: "B", value: 3)
+        XCTAssertEqual("\(link)", "['A', 'B', 3.0]")
     }
     
-    func testFlowsAsString() throws {
-        let flow = SankeyLink(source: "A", target: "B", weight: 3)
-        let flows = [flow, flow]
-        XCTAssertEqual("\(flows)", "['A', 'B', 3.0]")
+    func testLinksAsString() {
+        let links: [SankeyLink] = [["A", "X", "5"], ["A", "Y", "7"]]
+        XCTAssertEqual("\(links)", "[['A', 'X', 5.0], ['A', 'Y', 7.0]]")
     }
     
     func testExampleA() {
