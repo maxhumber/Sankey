@@ -1,6 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/maxhumber/gif/master/logo/gif.png" width="250px" alt="gif">
 </div>
+
 ### About
 
 Sankey diagrams in SwiftUI, powered by [Google Charts](https://developers.google.com/chart)
@@ -57,6 +58,8 @@ struct ReadMeView: View {
     }
 }
 ```
+
+
 
 To make this:
 
