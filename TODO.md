@@ -1,9 +1,5 @@
 **Next**
 
-- README
-
-  - Quickstart
-
 - Logo
 
 - Publish

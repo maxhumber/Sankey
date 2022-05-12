@@ -86,7 +86,7 @@ SankeyDiagram([
 ])
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/simple_sankey.png" alt="simple_sankey" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/simple_sankey.png" alt="simple_sankey" width="500px">
 
 
 
@@ -96,7 +96,7 @@ SankeyDiagram([
 SankeyDiagram(data)
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/multilevel_sankey.png" alt="multilevel_sankey" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/multilevel_sankey.png" alt="multilevel_sankey" width="500px">
 
 
 
@@ -116,7 +116,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/gradient_links.png" alt="gradient_links" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/gradient_links.png" alt="gradient_links" width="500px">
 
 
 
@@ -132,7 +132,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/uniform_color.png" alt="uniform_color" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/uniform_color.png" alt="uniform_color" width="500px">
 
 
 
@@ -147,7 +147,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/stroked_links.png" alt="stroked_links" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/stroked_links.png" alt="stroked_links" width="500px">
 
 
 
@@ -164,7 +164,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_style.png" alt="label_style" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_style.png" alt="label_style" width="500px">
 
 
 
@@ -177,7 +177,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_padding.png" alt="label_padding" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_padding.png" alt="label_padding" width="500px">
 
 
 
@@ -190,7 +190,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_width.png" alt="node_width" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_width.png" alt="node_width" width="500px">
 
 
 
@@ -203,7 +203,7 @@ SankeyDiagram(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_padding.png" alt="node_padding" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_padding.png" alt="node_padding" width="500px">
 
 
 
