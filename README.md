@@ -12,7 +12,7 @@ Sankey diagrams in SwiftUI, powered by [Google Charts](https://developers.google
 
 Make interactive charts like this:
 
-  <img src="/Users/max/Repos/Sankey/Images/quickstart.png" width="250px" alt="quickstart">
+  <img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/quickstart.png" width="250px" alt="quickstart">
 
 
 
@@ -73,7 +73,7 @@ Inspired by the examples in the Google Charts [Gallery](https://developers.googl
 
 
 
-- Simple Sankey | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#a-simple-example)
+- Simple Sankey | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/SimpleSankeyView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#a-simple-example)
 
 ```swift
 SankeyDiagram([
@@ -86,21 +86,21 @@ SankeyDiagram([
 ])
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/simple_sankey.png" alt="simple_sankey" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/simple_sankey.png" alt="simple_sankey" width="500px" align="left">
 
 
 
-- Multilevel Sankey | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#multilevel-sankeys)
+- Multilevel Sankey | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/MultilevelSankey.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#multilevel-sankeys)
 
 ```swift
 SankeyDiagram(data)
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/multilevel_sankey.png" alt="multilevel_sankey" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/multilevel_sankey.png" alt="multilevel_sankey" width="500px" align="left">
 
 
 
-- Gradient Links | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
+- Gradient Links | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/GradientLinksView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
 
 ```swift
 let colors = [
@@ -116,11 +116,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/gradient_links.png" alt="gradient_links" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/gradient_links.png" alt="gradient_links" width="500px" align="left">
 
 
 
-- Uniform Color | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
+- Uniform Color | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/UniformColorView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
 
 ```swift
 SankeyDiagram(
@@ -132,11 +132,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/uniform_color.png" alt="uniform_color" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/uniform_color.png" alt="uniform_color" width="500px" align="left">
 
 
 
-- Stroked Links | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
+- Stroked Links | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/StrokedLinksView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors)
 
 ```swift
 SankeyDiagram(
@@ -147,11 +147,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/stroked_links.png" alt="stroked_links" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/stroked_links.png" alt="stroked_links" width="500px" align="left">
 
 
 
-- Label Style | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#customizing-labels)
+- Label Style | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/LabelStyleView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#customizing-labels)
 
 ```swift
 SankeyDiagram(
@@ -164,11 +164,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/label_style.png" alt="label_style" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_style.png" alt="label_style" width="500px" align="left">
 
 
 
-- Label Padding | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#customizing-labels)
+- Label Padding | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/LabelPaddingView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#customizing-labels)
 
 ```swift
 SankeyDiagram(
@@ -177,11 +177,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/label_padding.png" alt="label_padding" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/label_padding.png" alt="label_padding" width="500px" align="left">
 
 
 
-- Node Width | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#adjusting-nodes)
+- Node Width | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/NodeWidthView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#adjusting-nodes)
 
 ```swift
 SankeyDiagram(
@@ -190,11 +190,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/node_width.png" alt="node_width" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_width.png" alt="node_width" width="500px" align="left">
 
 
 
-- Node Padding | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#adjusting-nodes)
+- Node Padding | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Interface/Views/NodePaddingView.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#adjusting-nodes)
 
 ```swift
 SankeyDiagram(
@@ -203,11 +203,11 @@ SankeyDiagram(
 )
 ```
 
-<img src="/Users/max/Repos/Sankey/Images/node_padding.png" alt="node_padding" width="500px" align="left">
+<img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/node_padding.png" alt="node_padding" width="500px" align="left">
 
 
 
-- Data | [Code]() | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#data-format)
+- Data | [Code](https://github.com/maxhumber/Sankey/blob/master/Examples/Examples/Data/SankeyLink%2Bcountries.swift) | [Inspiration](https://developers.google.com/chart/interactive/docs/gallery/sankey#data-format)
 
 ```swift
 let data: [SankeyLink] = [
@@ -311,4 +311,4 @@ dependencies: [
 
 ### Fine Print
 
-<sup>‡ Requires an active network connection in order to load and interact with the Google Charts API</sup>
+<sup>‡ Active network connection required</sup>
