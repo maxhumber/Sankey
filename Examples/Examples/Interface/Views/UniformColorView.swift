@@ -23,7 +23,9 @@ struct UniformColorView: View {
 
 struct UniformColorView_Previews: PreviewProvider {
     static var previews: some View {
-        UniformColorView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            UniformColorView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

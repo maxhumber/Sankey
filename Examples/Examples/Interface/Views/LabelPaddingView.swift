@@ -20,7 +20,9 @@ struct LabelPaddingView: View {
 
 struct CustomizingLabelPaddingView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelPaddingView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            LabelPaddingView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

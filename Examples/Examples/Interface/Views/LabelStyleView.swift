@@ -14,7 +14,7 @@ struct LabelStyleView: View {
         SankeyDiagram(
             data,
             nodeLabelColor: "#871b47",
-            nodeLabelFontSize: 24,
+            nodeLabelFontSize: 32,
             nodeLabelFontName: "Times-Roman",
             nodeLabelBold: true,
             nodeLabelItalic: true
@@ -24,8 +24,10 @@ struct LabelStyleView: View {
 
 struct CustomizingLabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelStyleView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            LabelStyleView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 

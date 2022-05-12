@@ -17,7 +17,9 @@ struct MultilevelSankey: View {
 
 struct MultilevelSankeyView_Previews: PreviewProvider {
     static var previews: some View {
-        MultilevelSankey()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            MultilevelSankey()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

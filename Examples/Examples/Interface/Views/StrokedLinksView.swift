@@ -14,7 +14,6 @@ struct StrokedLinksView: View {
         SankeyDiagram(
             data,
             nodeColors: ["#a61d4c"],
-            nodeLabelFontSize: 24,
             linkColorStroke: "black",
             linkColorStrokeWidth: 1
         )
@@ -23,7 +22,9 @@ struct StrokedLinksView: View {
 
 struct StrokedLinksView_Previews: PreviewProvider {
     static var previews: some View {
-        StrokedLinksView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            StrokedLinksView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

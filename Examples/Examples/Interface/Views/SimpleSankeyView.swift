@@ -25,5 +25,6 @@ struct SimpleSankeyView_Previews: PreviewProvider {
         NavigationView {
             SimpleSankeyView()
         }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

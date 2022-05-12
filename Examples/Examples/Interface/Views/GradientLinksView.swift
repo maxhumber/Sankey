@@ -27,8 +27,10 @@ struct GradientLinksView: View {
 
 struct GradientLinksView_Previews: PreviewProvider {
     static var previews: some View {
-        GradientLinksView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            GradientLinksView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 

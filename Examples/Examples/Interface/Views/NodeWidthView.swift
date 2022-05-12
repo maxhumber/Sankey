@@ -13,14 +13,16 @@ struct NodeWidthView: View {
     private var diagram: some View {
         SankeyDiagram(
             data,
-            nodePadding: 40
+            nodeWidth: 24
         )
     }
 }
 
 struct AdjustingNodeWidthView_Previews: PreviewProvider {
     static var previews: some View {
-        NodeWidthView()
-            .previewInterfaceOrientation(.landscapeLeft)
+        NavigationView {
+            NodeWidthView()
+        }
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }
