@@ -1,13 +1,3 @@
-**Next**
-
-- Logo
-
-- Publish
-
-- Promote
-
-  
-
 **Eventually/Maybe**
 
 - Sankey Generator App?
@@ -18,3 +8,4 @@
 - Offline cache
 - Tooltip customization (HTML options)
 - Better gallery examples
+- Bug: Ignore Safe Area 

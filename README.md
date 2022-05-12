@@ -1,6 +1,7 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/maxhumber/gif/master/logo/gif.png" width="250px" alt="gif">
+  <img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/logo.png" width="250px" alt="logo">
 </div>
+
 
 ### About
 
