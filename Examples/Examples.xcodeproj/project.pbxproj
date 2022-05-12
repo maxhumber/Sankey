@@ -25,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		50784897282D0A5100C1BBB1 /* Sankey */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Sankey; path = ../../..; sourceTree = "<group>"; };
 		508E31DD282C205C0004BC7F /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		508E31E0282C205C0004BC7F /* ExamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplesApp.swift; sourceTree = "<group>"; };
 		508E31E2282C205C0004BC7F /* IndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexView.swift; sourceTree = "<group>"; };
@@ -34,7 +35,6 @@
 		50A9A8F8282C2328006D8D55 /* GradientLinksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientLinksView.swift; sourceTree = "<group>"; };
 		50A9A8F9282C2328006D8D55 /* MultilevelSankey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilevelSankey.swift; sourceTree = "<group>"; };
 		50A9A8FA282C2328006D8D55 /* SimpleSankeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleSankeyView.swift; sourceTree = "<group>"; };
-		50B64550282C253100B0380C /* Sankey */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Sankey; path = ../../../Sankey; sourceTree = "<group>"; };
 		50B64551282C266D00B0380C /* UniformColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformColorView.swift; sourceTree = "<group>"; };
 		50B64553282C26CA00B0380C /* StrokedLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokedLinksView.swift; sourceTree = "<group>"; };
 		50B64555282C290300B0380C /* LabelStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStyleView.swift; sourceTree = "<group>"; };
@@ -55,6 +55,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50784896282D0A4C00C1BBB1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				50784897282D0A5100C1BBB1 /* Sankey */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		508E31D4282C205C0004BC7F = {
 			isa = PBXGroup;
 			children = (
@@ -75,20 +83,12 @@
 		508E31DF282C205C0004BC7F /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				50A9A901282C2506006D8D55 /* Core */,
+				50784896282D0A4C00C1BBB1 /* Core */,
 				50C87761282C20AD00E584CD /* App */,
 				50C8776B282C221300E584CD /* Data */,
 				50C87762282C20C800E584CD /* Interface */,
 			);
 			path = Examples;
-			sourceTree = "<group>";
-		};
-		50A9A901282C2506006D8D55 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				50B64550282C253100B0380C /* Sankey */,
-			);
-			path = Core;
 			sourceTree = "<group>";
 		};
 		50C87761282C20AD00E584CD /* App */ = {
