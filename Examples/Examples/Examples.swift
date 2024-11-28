@@ -1,15 +1,25 @@
-import SwiftUI
 import Sankey
+import SwiftUI
 
 #Preview(traits: .landscapeRight) {
     SankeyDiagram(.preview)
 }
 
+#Preview(traits: .landscapeRight) {
+    SankeyDiagram(.preview)
+        .nodeAlignment(.right)
+        .nodeWidth(20)
+        .nodeColor(.red)
+        .nodeOpacity(0.6)
+        .linkColor(.blue)
+        .linkOpacity(0.6)
+        .frame(width: 500)
+}
+
 #Preview {
-    // Modern API usage
     @Previewable @State var sankeyData = SankeyData(
         nodes: [
-            SankeyNode("a", color: Color.green.hex),
+            SankeyNode("a", color: .green),
             SankeyNode("b", label: "Toronto"),
             SankeyNode("c"),
             SankeyNode("d"),
@@ -24,18 +34,17 @@ import Sankey
     )
     
     VStack {
-        // Modern usage
         SankeyDiagram(data: sankeyData)
-            .nodeAlignment(.right)
+            .nodeAlignment(.justify)
             .nodeWidth(10)
             .nodeOpacity(0.7)
             .nodePadding(30)
             .linkColorMode(.sourceTarget)
-            .linkOpacity(0.5)
+            .linkOpacity(0.3)
             .labelFontSize(14)
             .labelFontFamily("Arial")
             .labelOpacity(0.3)
-            .labelColor(Color.black.hex)
+            .labelColor(.black)
             .labelPadding(5)
             .frame(height: 200)
             .padding(5)
@@ -44,20 +53,4 @@ import Sankey
             print(sankeyData)
         }
     }
-}
-
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
-
-#Preview {
-    ContentView()
 }
