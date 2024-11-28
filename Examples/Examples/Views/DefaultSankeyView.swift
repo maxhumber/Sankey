@@ -5,7 +5,7 @@ struct DefaultSankeyView: View {
     let data: SankeyData = .preview
     
     var body: some View {
-        SankeyDiagram(data: data)
+        SankeyDiagram(data)
     }
 }
 

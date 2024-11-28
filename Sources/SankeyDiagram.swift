@@ -15,7 +15,7 @@ public struct SankeyDiagram: UIViewRepresentable {
     /// Initializes a new `SankeyDiagram` with the provided data
     ///
     /// - Parameter data: The data model containing nodes and links for the diagram
-    public init(data: SankeyData) {
+    public init(_ data: SankeyData) {
         self.data = data
     }
     
