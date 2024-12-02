@@ -4,12 +4,12 @@ import SwiftUI
 struct CustomizableSankeyView: View {
     @State private var nodeAlignment: SankeyNodeAlignment = .justify
     @State private var nodeWidth: Double = 8
-    @State private var nodeOpacity: Double = 0.6
-    @State private var nodeColor: Color = .red
     @State private var nodePadding: Double = 24
-    @State private var linkColorMode: SankeyLinkColorMode? = nil
+    @State private var nodeDefaultColor: Color = .red
+    @State private var nodeOpacity: Double = 0.6
+    @State private var linkDefaultColor: Color = .gray
     @State private var linkOpacity: Double = 0.2
-    @State private var linkColor: Color = .gray
+    @State private var linkColorMode: SankeyLinkColorMode? = nil
     @State private var labelFontSize: Double = 12
     @State private var labelFontFamily: String = "sans-serif"
     @State private var labelOpacity: Double = 0.8
@@ -18,10 +18,10 @@ struct CustomizableSankeyView: View {
     
     let data = SankeyData(
         nodes: [
-            SankeyNode("A", color: .blue),
-            SankeyNode("B", color: .purple),
+            SankeyNode("A"),
+            SankeyNode("B", color: .blue.opacity(0.20)),
             SankeyNode("X"),
-            SankeyNode("Y", color: .yellow),
+            SankeyNode("Y"),
             SankeyNode("Z", color: .green),
         ],
         links: [
@@ -50,21 +50,16 @@ struct CustomizableSankeyView: View {
         SankeyDiagram(data)
             .nodeAlignment(nodeAlignment)
             .nodeWidth(nodeWidth)
-            .nodeOpacity(nodeOpacity)
-            .nodeColor(nodeColor)
             .nodePadding(nodePadding)
-            .linkColorMode(linkColorMode)
-            // linkColor should accept a color or an option
-            // .linkColor(.sourceTarget)
-            // .linkColor(.source)
-            // .linkColor(.target)
-            // .linkColor(.red.opacity(0.2))
+            .nodeDefaultColor(nodeDefaultColor)
+            .nodeOpacity(nodeOpacity)
+            .linkDefaultColor(linkDefaultColor)
             .linkOpacity(linkOpacity)
-            .linkColor(linkColor)
+            .linkColorMode(linkColorMode)
             .labelFontSize(labelFontSize)
             .labelFontFamily(labelFontFamily)
-            .labelOpacity(labelOpacity)
             .labelColor(labelColor)
+            .labelOpacity(labelOpacity)
             .labelPadding(labelPadding)
     }
     
@@ -90,8 +85,8 @@ struct CustomizableSankeyView: View {
                 Slider(value: $nodeOpacity, in: 0...1)
             }
             HStack {
-                Text("Node Color")
-                ColorPicker("", selection: $nodeColor)
+                Text("Node Default Color")
+                ColorPicker("", selection: $nodeDefaultColor)
                     .labelsHidden()
             }
             HStack {
@@ -114,8 +109,8 @@ struct CustomizableSankeyView: View {
                 Slider(value: $linkOpacity, in: 0...1)
             }
             HStack {
-                Text("Link Color")
-                ColorPicker("", selection: $linkColor)
+                Text("Link Default Color")
+                ColorPicker("", selection: $linkDefaultColor)
                     .labelsHidden()
             }
             // Lable Options

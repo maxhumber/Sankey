@@ -6,17 +6,17 @@ import SwiftUI
 struct SankeyOptions {
     var nodeAlignment: SankeyNodeAlignment = .justify
     var nodeWidth: Double = 8
-    var nodeOpacity: Double = 0.6
-    var nodeColor: String = "#666666"
     var nodePadding: Double = 24
-    var linkColorMode: SankeyLinkColorMode? = nil
+    var nodeDefaultColor: String = "#666666"
+    var nodeOpacity: Double = 0.6
+    var linkDefaultColor: String = "#888888"
     var linkOpacity: Double = 0.2
-    var linkColor: String = "#888888"
+    var linkColorMode: SankeyLinkColorMode? = nil
+    var labelPadding: Double = 8
+    var labelColor: String = "#222222"
+    var labelOpacity: Double = 0.8
     var labelFontSize: Double = 12
     var labelFontFamily: String = "sans-serif"
-    var labelOpacity: Double = 0.8
-    var labelColor: String = "#222222"
-    var labelPadding: Double = 8
 }
 
 /// An enumeration of link color modes in a Sankey diagram

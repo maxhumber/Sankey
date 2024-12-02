@@ -1,30 +1,105 @@
 import SwiftUI
 import WebKit
 
-// MARK: - UIKit/WebKit Wrapper
+public enum SankeyDiagramPhase {
+    case empty
+    case loading
+    case success
+    case failure(Error)
+}
 
 /// SwiftUI Sankey diagram rendered using D3 via dynamically generated HTML
-public struct SankeyDiagram: UIViewRepresentable {
+public struct SankeyDiagram<Loading: View, Failure: View>: UIViewRepresentable {
     public var data: SankeyData
     var options = SankeyOptions()
+    let loading: () -> Loading
+    let failure: (Error) -> Failure
     
-    /// Initializes a new `SankeyDiagram` with the provided data
-    ///
-    /// - Parameter data: The data model containing nodes and links for the diagram
-    public init(_ data: SankeyData) {
+    /// Initializes a new `SankeyDiagram` with the provided data and state views
+    public init(
+        _ data: SankeyData,
+        @ViewBuilder loading: @escaping () -> Loading,
+        @ViewBuilder failure: @escaping (Error) -> Failure
+    ) {
         self.data = data
+        self.loading = loading
+        self.failure = failure
     }
     
     public func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.isOpaque = false
         webView.scrollView.isScrollEnabled = false
+        webView.navigationDelegate = context.coordinator
+        context.coordinator.phase = .loading
+        context.coordinator.updateOverlay(for: webView)
         loadHTML(webView)
         return webView
     }
     
     public func updateUIView(_ webView: WKWebView, context: Context) {
+        context.coordinator.phase = .loading
+        context.coordinator.updateOverlay(for: webView)
         loadHTML(webView)
+    }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+}
+
+extension SankeyDiagram {
+    public class Coordinator: NSObject, WKNavigationDelegate {
+        var parent: SankeyDiagram
+        var phase: SankeyDiagramPhase = .empty
+        var overlay: UIView?
+        
+        init(_ parent: SankeyDiagram) {
+            self.parent = parent
+        }
+        
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            phase = .loading
+            updateOverlay(for: webView)
+        }
+        
+        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            phase = .success
+            overlay?.removeFromSuperview()
+            overlay = nil
+        }
+        
+        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            phase = .failure(error)
+            updateOverlay(for: webView)
+        }
+        
+        public func updateOverlay(for webView: WKWebView) {
+            overlay?.removeFromSuperview()
+            let hostingController: UIHostingController<AnyView>
+            switch phase {
+            case .loading:
+                hostingController = UIHostingController(rootView: AnyView(parent.loading()))
+            case .failure(let error):
+                hostingController = UIHostingController(rootView: AnyView(parent.failure(error)))
+            default:
+                return
+            }
+            hostingController.view.backgroundColor = .clear
+            hostingController.view.frame = webView.bounds
+            hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            webView.addSubview(hostingController.view)
+            overlay = hostingController.view
+        }
+    }
+}
+
+// MARK: - Convenience Initializers
+
+extension SankeyDiagram where Loading == EmptyView, Failure == EmptyView {
+    /// Creates a Sankey diagram with default loading and failure views
+    public init(_ data: SankeyData) {
+        self.init(data, loading: { EmptyView() }, failure: { _ in EmptyView() } )
     }
 }
 
@@ -49,9 +124,9 @@ extension SankeyDiagram {
         return new
     }
     
-    public func nodeColor(_ color: Color) -> SankeyDiagram {
+    public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from nodeColor
         var new = self
-        new.options.nodeColor = color.hex
+        new.options.nodeDefaultColor = color.hex
         return new
     }
     
@@ -73,9 +148,9 @@ extension SankeyDiagram {
         return new
     }
     
-    public func linkColor(_ color: Color) -> SankeyDiagram {
+    public func linkDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from linkColor
         var new = self
-        new.options.linkColor = color.hex
+        new.options.linkDefaultColor = color.hex
         return new
     }
     
@@ -172,8 +247,8 @@ extension SankeyDiagram {
         
                 function getLinkColor(link) {
                     const mode = "\(options.linkColorMode?.description ?? "")";
-                    if (mode === "source") return link.source.color || "\(options.linkColor)";
-                    if (mode === "target") return link.target.color || "\(options.linkColor)";
+                    if (mode === "source") return link.source.color || "\(options.nodeDefaultColor)";
+                    if (mode === "target") return link.target.color || "\(options.nodeDefaultColor)";
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
                         const gradient = svg.append("defs")
@@ -184,13 +259,13 @@ extension SankeyDiagram {
                             .attr("x2", link.target.x0);
                         gradient.append("stop")
                             .attr("offset", "0%")
-                            .attr("stop-color", link.source.color || "\(options.nodeColor)");
+                            .attr("stop-color", link.source.color || "\(options.nodeDefaultColor)");
                         gradient.append("stop")
                             .attr("offset", "100%")
-                            .attr("stop-color", link.target.color || "\(options.nodeColor)");
+                            .attr("stop-color", link.target.color || "\(options.nodeDefaultColor)");
                         return `url(#${gradientId})`;
                     }
-                    return link.color || "\(options.linkColor)";
+                    return link.color || "\(options.linkDefaultColor)";
                 }
                 
                 const link = svg.append("g")
@@ -217,7 +292,7 @@ extension SankeyDiagram {
                     .attr("y", node => node.y0)
                     .attr("width", node => node.x1 - node.x0)
                     .attr("height", node => node.y1 - node.y0)
-                    .style("fill", node => node.color || "\(options.nodeColor)")
+                    .style("fill", node => node.color || "\(options.nodeDefaultColor)")
                     .style("opacity", \(options.nodeOpacity));
         
                 node.append("text")
