@@ -3,13 +3,9 @@ import WebKit
 
 // MARK: - UIKit/WebKit Wrapper
 
-/// A SwiftUI representation of a Sankey diagram, implemented using `WKWebView`
-/// The diagram is rendered using D3.js and D3-Sankey via dynamically generated HTML
+/// SwiftUI Sankey diagram rendered using D3 via dynamically generated HTML
 public struct SankeyDiagram: UIViewRepresentable {
-    /// The data representing the nodes and links of the Sankey diagram
     public var data: SankeyData
-    
-    /// Configuration options for the appearance and behavior of the diagram
     var options = SankeyOptions()
     
     /// Initializes a new `SankeyDiagram` with the provided data
@@ -233,7 +229,7 @@ extension SankeyDiagram {
                     .attr("y", node => (node.y1 + node.y0) / 2)
                     .attr("dy", "0.35em")
                     .attr("text-anchor", node => node.x0 < width / 2 ? "start" : "end")
-                    .text(node => node.label);
+                    .text(node => node.id);
             </script>
         </body>
         """

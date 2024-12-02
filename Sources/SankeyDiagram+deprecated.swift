@@ -1,12 +1,9 @@
 import Foundation
 
 extension SankeyDiagram {
-    /// Initializes a `SankeyDiagram` with a wide array of customizable options
+    /// Initializes a `SankeyDiagram` with an array of customizable options
     ///
-    /// **Deprecated**: Use `SankeyDiagram(data:)` with modifiers instead
-    ///
-    /// This initializer allows you to customize various visual and interactive properties of the diagram,
-    /// but has been deprecated to encourage a more modular and SwiftUI-consistent approach
+    /// **Deprecated**: Use `SankeyDiagram(_:)` with modifiers instead
     ///
     /// - Parameters:
     ///   - links: An array of `SankeyLink` objects representing the links in the diagram
@@ -34,7 +31,7 @@ extension SankeyDiagram {
     ///   - tooltipTextBold: **Deprecated**. A Boolean indicating whether tooltip text should be bold
     ///   - tooltipTextItalic: **Deprecated**. A Boolean indicating whether tooltip text should be italicized
     ///   - layoutIterations: **Deprecated**. The number of iterations for the layout algorithm
-    @available(*, deprecated, message: "Use SankeyDiagram(data:) with modifiers instead")
+    @available(*, deprecated, message: "Use SankeyDiagram(_:) with modifiers instead")
     public init(
         _ links: [SankeyLink],
         nodeColors: [String]? = nil,

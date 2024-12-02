@@ -1,11 +1,8 @@
 import Foundation
 
-/// A struct representing the data required to construct a Sankey diagram
+/// Data required to construct a Sankey diagram
 public struct SankeyData: Codable {
-    /// The nodes in the Sankey diagram
     public var nodes: [SankeyNode]
-    
-    /// The links between nodes in the Sankey diagram
     public var links: [SankeyLink]
     
     /// Initializes a new instance of `SankeyData`
