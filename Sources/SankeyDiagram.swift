@@ -1,193 +1,28 @@
 import SwiftUI
 import WebKit
 
-public enum SankeyDiagramPhase {
-    case empty
-    case loading
-    case success
-    case failure(Error)
-}
-
-/// SwiftUI Sankey diagram rendered using D3 via dynamically generated HTML
-public struct SankeyDiagram<Loading: View, Failure: View>: UIViewRepresentable {
+public struct SankeyDiagram: UIViewRepresentable {
     public var data: SankeyData
     var options = SankeyOptions()
-    let loading: () -> Loading
-    let failure: (Error) -> Failure
     
-    /// Initializes a new `SankeyDiagram` with the provided data and state views
-    public init(
-        _ data: SankeyData,
-        @ViewBuilder loading: @escaping () -> Loading,
-        @ViewBuilder failure: @escaping (Error) -> Failure
-    ) {
+    public init(_ data: SankeyData) {
         self.data = data
-        self.loading = loading
-        self.failure = failure
     }
     
     public func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.isOpaque = false
         webView.scrollView.isScrollEnabled = false
-        webView.navigationDelegate = context.coordinator
-        context.coordinator.phase = .loading
-        context.coordinator.updateOverlay(for: webView)
         loadHTML(webView)
         return webView
     }
     
     public func updateUIView(_ webView: WKWebView, context: Context) {
-        context.coordinator.phase = .loading
-        context.coordinator.updateOverlay(for: webView)
         loadHTML(webView)
     }
-    
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-}
 
-extension SankeyDiagram {
-    public class Coordinator: NSObject, WKNavigationDelegate {
-        var parent: SankeyDiagram
-        var phase: SankeyDiagramPhase = .empty
-        var overlay: UIView?
-        
-        init(_ parent: SankeyDiagram) {
-            self.parent = parent
-        }
-        
-        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            phase = .loading
-            updateOverlay(for: webView)
-        }
-        
-        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            phase = .success
-            overlay?.removeFromSuperview()
-            overlay = nil
-        }
-        
-        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            phase = .failure(error)
-            updateOverlay(for: webView)
-        }
-        
-        public func updateOverlay(for webView: WKWebView) {
-            overlay?.removeFromSuperview()
-            let hostingController: UIHostingController<AnyView>
-            switch phase {
-            case .loading:
-                hostingController = UIHostingController(rootView: AnyView(parent.loading()))
-            case .failure(let error):
-                hostingController = UIHostingController(rootView: AnyView(parent.failure(error)))
-            default:
-                return
-            }
-            hostingController.view.backgroundColor = .clear
-            hostingController.view.frame = webView.bounds
-            hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            webView.addSubview(hostingController.view)
-            overlay = hostingController.view
-        }
-    }
-}
-
-// MARK: - Convenience Initializers
-
-extension SankeyDiagram where Loading == EmptyView, Failure == EmptyView {
-    /// Creates a Sankey diagram with default loading and failure views
-    public init(_ data: SankeyData) {
-        self.init(data, loading: { EmptyView() }, failure: { _ in EmptyView() } )
-    }
-}
-
-// MARK: - Public Modifiers
-
-extension SankeyDiagram {
-    public func nodeAlignment(_ value: SankeyNodeAlignment) -> SankeyDiagram {
-        var new = self
-        new.options.nodeAlignment = value
-        return new
-    }
+    // MARK: - Private Implementation Details
     
-    public func nodeWidth(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodeWidth = value
-        return new
-    }
-    
-    public func nodeOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodeOpacity = value
-        return new
-    }
-    
-    public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from nodeColor
-        var new = self
-        new.options.nodeDefaultColor = color.hex
-        return new
-    }
-    
-    public func nodePadding(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodePadding = value
-        return new
-    }
-    
-    public func linkColorMode(_ value: SankeyLinkColorMode?) -> SankeyDiagram {
-        var new = self
-        new.options.linkColorMode = value
-        return new
-    }
-    
-    public func linkOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.linkOpacity = value
-        return new
-    }
-    
-    public func linkDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from linkColor
-        var new = self
-        new.options.linkDefaultColor = color.hex
-        return new
-    }
-    
-    public func labelFontSize(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelFontSize = value
-        return new
-    }
-    
-    public func labelFontFamily(_ value: String) -> SankeyDiagram {
-        var new = self
-        new.options.labelFontFamily = value
-        return new
-    }
-    
-    public func labelOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelOpacity = value
-        return new
-    }
-    
-    public func labelColor(_ color: Color) -> SankeyDiagram {
-        var new = self
-        new.options.labelColor = color.hex
-        return new
-    }
-    
-    public func labelPadding(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelPadding = value
-        return new
-    }
-}
-
-// MARK: - Private Implementation Details
-
-extension SankeyDiagram {
     private func loadHTML(_ webView: WKWebView) {
         guard
             let pathD3 = Bundle.module.path(forResource: "d3.min", ofType: "js"),
@@ -223,7 +58,10 @@ extension SankeyDiagram {
             <script src="d3-sankey.min.js"></script>
             <style>
                 body { margin: 0; }
-                svg { width: 100%; height: 100%; }
+                svg { 
+                    width: 100%; 
+                    height: 100%;
+                }
             </style>
         </head>
         <body>
@@ -308,5 +146,87 @@ extension SankeyDiagram {
             </script>
         </body>
         """
+    }
+}
+
+// MARK: - Public Modifiers
+
+extension SankeyDiagram {
+    public func nodeAlignment(_ value: SankeyNodeAlignment) -> SankeyDiagram {
+        var new = self
+        new.options.nodeAlignment = value
+        return new
+    }
+    
+    public func nodeWidth(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.nodeWidth = value
+        return new
+    }
+    
+    public func nodeOpacity(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.nodeOpacity = value
+        return new
+    }
+    
+    public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from nodeColor
+        var new = self
+        new.options.nodeDefaultColor = color.hex
+        return new
+    }
+    
+    public func nodePadding(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.nodePadding = value
+        return new
+    }
+    
+    public func linkColorMode(_ value: SankeyLinkColorMode?) -> SankeyDiagram {
+        var new = self
+        new.options.linkColorMode = value
+        return new
+    }
+    
+    public func linkOpacity(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.linkOpacity = value
+        return new
+    }
+    
+    public func linkDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from linkColor
+        var new = self
+        new.options.linkDefaultColor = color.hex
+        return new
+    }
+    
+    public func labelFontSize(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.labelFontSize = value
+        return new
+    }
+    
+    public func labelFontFamily(_ value: String) -> SankeyDiagram {
+        var new = self
+        new.options.labelFontFamily = value
+        return new
+    }
+    
+    public func labelOpacity(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.labelOpacity = value
+        return new
+    }
+    
+    public func labelColor(_ color: Color) -> SankeyDiagram {
+        var new = self
+        new.options.labelColor = color.hex
+        return new
+    }
+    
+    public func labelPadding(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.labelPadding = value
+        return new
     }
 }

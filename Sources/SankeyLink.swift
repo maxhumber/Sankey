@@ -1,12 +1,10 @@
 import Foundation
 import SwiftUI
 
-/// Link in a Sankey diagram
 public struct SankeyLink: Codable {
-    public var value: Double
     public var source: String
     public var target: String
-    /// An optional color for the link, represented as a hexadecimal string
+    public var value: Double
     public var color: String?
     
     /// Initializes a new instance of `SankeyLink`

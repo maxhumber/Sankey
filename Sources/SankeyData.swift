@@ -1,7 +1,6 @@
 import Foundation
 
-/// Data required to construct a Sankey diagram
-public struct SankeyData: Codable {
+public struct SankeyData: Codable, CustomStringConvertible {
     public var nodes: [SankeyNode]
     public var links: [SankeyLink]
     
@@ -14,13 +13,7 @@ public struct SankeyData: Codable {
         self.nodes = nodes
         self.links = links
     }
-}
-
-extension SankeyData: CustomStringConvertible {
-    /// A JSON string representation of the Sankey diagram data
-    ///
-    /// Converts the `SankeyData` instance into a JSON string without escaping slashes
-    /// Returns an empty JSON object (`{}`) if encoding fails
+    
     public var description: String {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .withoutEscapingSlashes

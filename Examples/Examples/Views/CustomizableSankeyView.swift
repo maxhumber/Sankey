@@ -10,16 +10,17 @@ struct CustomizableSankeyView: View {
     @State private var linkDefaultColor: Color = .gray
     @State private var linkOpacity: Double = 0.2
     @State private var linkColorMode: SankeyLinkColorMode? = nil
-    @State private var labelFontSize: Double = 12
-    @State private var labelFontFamily: String = "sans-serif"
+    @State private var labelFontSize: Double = 14
+    @State private var labelFontFamily: String = "-apple-system, BlinkMacSystemFont, sans-serif"
     @State private var labelOpacity: Double = 0.8
     @State private var labelColor: Color = .black
     @State private var labelPadding: Double = 8
+    @State private var isAppeared = false
     
     let data = SankeyData(
         nodes: [
             SankeyNode("A"),
-            SankeyNode("B", color: .blue.opacity(0.20)),
+            SankeyNode("B", color: .blue),
             SankeyNode("X"),
             SankeyNode("Y"),
             SankeyNode("Z", color: .green),
@@ -39,9 +40,12 @@ struct CustomizableSankeyView: View {
             VStack {
                 diagram
                     .frame(height: 250)
+                    .opacity(isAppeared ? 1 : 0)
+                    .animation(.easeIn(duration: 1.25), value: isAppeared)
                 options
             }
             .padding(10)
+            .task { isAppeared = true }
         }
         .scrollIndicators(.hidden)
     }
@@ -56,11 +60,11 @@ struct CustomizableSankeyView: View {
             .linkDefaultColor(linkDefaultColor)
             .linkOpacity(linkOpacity)
             .linkColorMode(linkColorMode)
-            .labelFontSize(labelFontSize)
-            .labelFontFamily(labelFontFamily)
+            .labelPadding(labelPadding)
             .labelColor(labelColor)
             .labelOpacity(labelOpacity)
-            .labelPadding(labelPadding)
+            .labelFontSize(labelFontSize)
+            .labelFontFamily(labelFontFamily)
     }
     
     private var options: some View {
@@ -77,6 +81,10 @@ struct CustomizableSankeyView: View {
                 .labelsHidden()
             }
             HStack {
+                Text("Node Padding")
+                Slider(value: $nodePadding, in: 0...50)
+            }
+            HStack {
                 Text("Node Width")
                 Slider(value: $nodeWidth, in: 1...20)
             }
@@ -89,11 +97,16 @@ struct CustomizableSankeyView: View {
                 ColorPicker("", selection: $nodeDefaultColor)
                     .labelsHidden()
             }
-            HStack {
-                Text("Node Padding")
-                Slider(value: $nodePadding, in: 0...50)
-            }
             // Link Options
+            HStack {
+                Text("Link Default Color")
+                ColorPicker("", selection: $linkDefaultColor)
+                    .labelsHidden()
+            }
+            HStack {
+                Text("Link Opacity")
+                Slider(value: $linkOpacity, in: 0...1)
+            }
             HStack {
                 Text("Link Color Mode")
                 Picker("Color Mode", selection: $linkColorMode) {
@@ -104,27 +117,10 @@ struct CustomizableSankeyView: View {
                 }
                 .labelsHidden()
             }
+            // Label Options
             HStack {
-                Text("Link Opacity")
-                Slider(value: $linkOpacity, in: 0...1)
-            }
-            HStack {
-                Text("Link Default Color")
-                ColorPicker("", selection: $linkDefaultColor)
-                    .labelsHidden()
-            }
-            // Lable Options
-            HStack {
-                Text("Label Font Size")
-                Slider(value: $labelFontSize, in: 8...24)
-            }
-            HStack {
-                Text("Label Font Family")
-                TextField("", text: $labelFontFamily)
-            }
-            HStack {
-                Text("Label Opacity")
-                Slider(value: $labelOpacity, in: 0...1)
+                Text("Label Padding")
+                Slider(value: $labelPadding, in: 0...20)
             }
             HStack {
                 Text("Label Color")
@@ -132,8 +128,16 @@ struct CustomizableSankeyView: View {
                     .labelsHidden()
             }
             HStack {
-                Text("Label Padding")
-                Slider(value: $labelPadding, in: 0...20)
+                Text("Label Opacity")
+                Slider(value: $labelOpacity, in: 0...1)
+            }
+            HStack {
+                Text("Label Font Size")
+                Slider(value: $labelFontSize, in: 8...24)
+            }
+            HStack {
+                Text("Label Font Family")
+                TextField("", text: $labelFontFamily)
             }
         }
     }
