@@ -6,11 +6,11 @@ struct DefaultSankeyView: View {
     
     var body: some View {
         SankeyDiagram(data)
+            .padding(10)
+            .frame(height: 250)
     }
 }
 
 #Preview {
     DefaultSankeyView()
-        .padding(10)
-        .frame(height: 250)
 }

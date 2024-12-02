@@ -24,6 +24,8 @@ struct MainView: View {
             .navigationDestination(for: Page.self) { page in
                 switch page {
                 case .first: DefaultSankeyView()
+                case .second: RussianView()
+                case .third: CustomizableSankeyView()
                 default: Text(page.id)
                 }
             }

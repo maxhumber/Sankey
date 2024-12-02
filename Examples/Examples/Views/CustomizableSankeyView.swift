@@ -15,7 +15,6 @@ struct CustomizableSankeyView: View {
     @State private var labelOpacity: Double = 0.8
     @State private var labelColor: Color = .black
     @State private var labelPadding: Double = 8
-    @State private var isAppeared = false
     
     let data = SankeyData(
         nodes: [
@@ -40,12 +39,9 @@ struct CustomizableSankeyView: View {
             VStack {
                 diagram
                     .frame(height: 250)
-                    .opacity(isAppeared ? 1 : 0)
-                    .animation(.easeIn(duration: 1.25), value: isAppeared)
                 options
             }
             .padding(10)
-            .task { isAppeared = true }
         }
         .scrollIndicators(.hidden)
     }

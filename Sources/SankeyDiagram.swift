@@ -4,7 +4,7 @@ import WebKit
 public struct SankeyDiagram: UIViewRepresentable {
     public var data: SankeyData
     var options = SankeyOptions()
-    
+
     public init(_ data: SankeyData) {
         self.data = data
     }
@@ -24,38 +24,13 @@ public struct SankeyDiagram: UIViewRepresentable {
     // MARK: - Private Implementation Details
     
     private func loadHTML(_ webView: WKWebView) {
-        guard
-            let pathD3 = Bundle.module.path(forResource: "d3.min", ofType: "js"),
-            let pathSankey = Bundle.module.path(forResource: "d3-sankey.min", ofType: "js")
-        else {
-            print("JavaScript files not found in the bundle")
-            return
-        }
-        let temp = FileManager.default.temporaryDirectory
-        let tempPathD3 = temp.appendingPathComponent("d3.min.js")
-        let tempPathSankey = temp.appendingPathComponent("d3-sankey.min.js")
-        let fileManager = FileManager.default
-        do {
-            if !fileManager.fileExists(atPath: tempPathD3.path) {
-                try fileManager.copyItem(atPath: pathD3, toPath: tempPathD3.path)
-            }
-            if !fileManager.fileExists(atPath: tempPathSankey.path) {
-                try fileManager.copyItem(atPath: pathSankey, toPath: tempPathSankey.path)
-            }
-        } catch {
-            print("Failed to copy JavaScript files: \(error)")
-            return
-        }
-        let htmlString = generateHTML(from: data, options: options)
-        webView.loadHTMLString(htmlString, baseURL: temp)
+        webView.loadHTMLString(generateHTML(), baseURL: nil)
     }
-    
-    private func generateHTML(from data: SankeyData, options: SankeyOptions) -> String {
+
+    private func generateHTML() -> String {
         """
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script src="d3.min.js"></script>
-            <script src="d3-sankey.min.js"></script>
             <style>
                 body { margin: 0; }
                 svg { 
@@ -66,6 +41,8 @@ public struct SankeyDiagram: UIViewRepresentable {
         </head>
         <body>
             <svg></svg>
+            <script>\(SankeyResources.d3minjs)</script>
+            <script>\(SankeyResources.d3sankeyminjs)</script>
             <script>
                 const width = window.innerWidth;
                 const height = window.innerHeight;
@@ -85,8 +62,8 @@ public struct SankeyDiagram: UIViewRepresentable {
         
                 function getLinkColor(link) {
                     const mode = "\(options.linkColorMode?.description ?? "")";
-                    if (mode === "source") return link.source.color || "\(options.nodeDefaultColor)";
-                    if (mode === "target") return link.target.color || "\(options.nodeDefaultColor)";
+                    if (mode === "source") return link.source.hex || "\(options.nodeDefaultColor)";
+                    if (mode === "target") return link.target.hex || "\(options.nodeDefaultColor)";
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
                         const gradient = svg.append("defs")
@@ -97,13 +74,13 @@ public struct SankeyDiagram: UIViewRepresentable {
                             .attr("x2", link.target.x0);
                         gradient.append("stop")
                             .attr("offset", "0%")
-                            .attr("stop-color", link.source.color || "\(options.nodeDefaultColor)");
+                            .attr("stop-color", link.source.hex || "\(options.nodeDefaultColor)");
                         gradient.append("stop")
                             .attr("offset", "100%")
-                            .attr("stop-color", link.target.color || "\(options.nodeDefaultColor)");
+                            .attr("stop-color", link.target.hex || "\(options.nodeDefaultColor)");
                         return `url(#${gradientId})`;
                     }
-                    return link.color || "\(options.linkDefaultColor)";
+                    return link.hex || "\(options.linkDefaultColor)";
                 }
                 
                 const link = svg.append("g")
@@ -130,8 +107,11 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .attr("y", node => node.y0)
                     .attr("width", node => node.x1 - node.x0)
                     .attr("height", node => node.y1 - node.y0)
-                    .style("fill", node => node.color || "\(options.nodeDefaultColor)")
-                    .style("opacity", \(options.nodeOpacity));
+                    .style("fill", node => node.hex || "\(options.nodeDefaultColor)")
+                    .style("opacity", \(options.nodeOpacity))
+                    .style("stroke", node => node.hex || "\(options.nodeDefaultColor)")
+                    .style("stroke-width", 0)
+                    .style("stroke-opacity", \(options.nodeOpacity));
         
                 node.append("text")
                     .attr("font-family", "\(options.labelFontFamily)")
@@ -149,84 +129,110 @@ public struct SankeyDiagram: UIViewRepresentable {
     }
 }
 
-// MARK: - Public Modifiers
+// MARK: - Public View Modifiers
 
 extension SankeyDiagram {
+    /// Sets the horizontal alignment of nodes
     public func nodeAlignment(_ value: SankeyNodeAlignment) -> SankeyDiagram {
         var new = self
         new.options.nodeAlignment = value
         return new
     }
     
+    /// Sets the width of nodes
     public func nodeWidth(_ value: Double) -> SankeyDiagram {
         var new = self
         new.options.nodeWidth = value
         return new
     }
     
-    public func nodeOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodeOpacity = value
-        return new
-    }
-    
-    public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from nodeColor
-        var new = self
-        new.options.nodeDefaultColor = color.hex
-        return new
-    }
-    
+    /// Sets the vertical padding between nodes
     public func nodePadding(_ value: Double) -> SankeyDiagram {
         var new = self
         new.options.nodePadding = value
         return new
     }
     
-    public func linkColorMode(_ value: SankeyLinkColorMode?) -> SankeyDiagram {
+    /// Sets the default color for nodes
+    public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {
         var new = self
-        new.options.linkColorMode = value
+        new.options.nodeDefaultColor = color.hex
         return new
     }
     
+    /// Sets the opacity of nodes
+    public func nodeOpacity(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.nodeOpacity = value
+        return new
+    }
+    
+    /// Sets the default color for links
+    public func linkDefaultColor(_ color: Color) -> SankeyDiagram {
+        var new = self
+        new.options.linkDefaultColor = color.hex
+        return new
+    }
+    
+    /// Sets the opacity of links
     public func linkOpacity(_ value: Double) -> SankeyDiagram {
         var new = self
         new.options.linkOpacity = value
         return new
     }
     
-    public func linkDefaultColor(_ color: Color) -> SankeyDiagram {  // Changed from linkColor
+    /// Sets how link colors are determined
+    public func linkColorMode(_ value: SankeyLinkColorMode?) -> SankeyDiagram {
         var new = self
-        new.options.linkDefaultColor = color.hex
+        new.options.linkColorMode = value
         return new
     }
     
-    public func labelFontSize(_ value: Double) -> SankeyDiagram {
+    /// Sets the padding between nodes and labels
+    public func labelPadding(_ value: Double) -> SankeyDiagram {
         var new = self
-        new.options.labelFontSize = value
+        new.options.labelPadding = value
         return new
     }
     
-    public func labelFontFamily(_ value: String) -> SankeyDiagram {
-        var new = self
-        new.options.labelFontFamily = value
-        return new
-    }
-    
-    public func labelOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelOpacity = value
-        return new
-    }
-    
+    /// Sets the color of labels
     public func labelColor(_ color: Color) -> SankeyDiagram {
         var new = self
         new.options.labelColor = color.hex
         return new
     }
     
-    public func labelPadding(_ value: Double) -> SankeyDiagram {
+    /// Sets the opacity of labels
+    public func labelOpacity(_ value: Double) -> SankeyDiagram {
         var new = self
-        new.options.labelPadding = value
+        new.options.labelOpacity = value
         return new
+    }
+    
+    /// Sets the font size of labels
+    public func labelFontSize(_ value: Double) -> SankeyDiagram {
+        var new = self
+        new.options.labelFontSize = value
+        return new
+    }
+    
+    /// Sets the font family of labels
+    public func labelFontFamily(_ value: String) -> SankeyDiagram {
+        var new = self
+        new.options.labelFontFamily = value
+        return new
+    }
+}
+
+struct SankeyResources {
+    static let d3minjs: String = loadResource(named: "d3.min", type: "js")
+    static let d3sankeyminjs: String = loadResource(named: "d3-sankey.min", type: "js")
+    
+    private static func loadResource(named name: String, type: String) -> String {
+        guard let path = Bundle.module.path(forResource: name, ofType: type), let content = try? String(contentsOfFile: path) else {
+            print("\(name).\(type) not found in the bundle")
+            return ""
+        }
+        return content
     }
 }
