@@ -67,7 +67,7 @@ extension SankeyDiagram {
         // nodeColorMode - Deprecated
         options.nodeWidth = nodeWidth ?? options.nodeWidth
         options.nodePadding = nodePadding ?? options.nodePadding
-        options.labelColor = nodeLabelColor ?? options.labelColor
+        options.labelHex = nodeLabelColor ?? options.labelHex
         options.labelFontSize = nodeLabelFontSize ?? options.labelFontSize
         options.labelFontFamily = nodeLabelFontName ?? options.labelFontFamily
         // nodeLabelBold - Deprecated
@@ -76,7 +76,7 @@ extension SankeyDiagram {
         // nodeInteractivity - Deprecated
         // linkColors - Deprecated
         // linkColorMode - Deprecated
-        options.linkDefaultColor = linkColorFill ?? options.linkDefaultColor
+        options.linkDefaultHex = linkColorFill ?? options.linkDefaultHex
         options.linkOpacity = linkColorFillOpacity ?? options.linkOpacity
         // linkColorStroke - Deprecated
         // linkColorStrokeWidth - Deprecated
