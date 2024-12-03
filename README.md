@@ -48,22 +48,24 @@ struct QuickStartView: View {
             .frame(height: 350)
     }
 }
+
+#Preview {
+    QuickstartView()
+}
 ```
 
 #### Installation
 
-You can integrate `Sankey` into your project using Swift Package Manager:
+Integrate `Sankey` into your project using Swift Package Manager:
 
 1. In Xcode, select your project in the Project Navigator
 2. Go to the Package Dependencies tab
 3. Click the + button to add a package dependency
-4. In the search bar, enter the repository URL for: `https://github.com/maxhumber/Sankey`
+4. In the search bar, enter: `https://github.com/maxhumber/Sankey`
 
 #### Usage
 
-You can find some examples in the example app (link)
-
-SankeyDiagrams are highly customizable and support dark mode! All of the customization options are available as modifiers on a SankeyDiagram themselves:
+`SankeyDiagram` objects are highly customizable and even support dark mode! All of the customization options are available as modifiers on a `SankeyDiagram` themselves:
 
 ```swift
 struct UsageExampleView: View {
@@ -115,12 +117,21 @@ struct UsageExampleView: View {
             .frame(height: 400)
     }
 }
+
+#Preview {
+    UsageExampleView()
+        .preferredColorScheme(.dark)
+}
 ```
 
 <img src="Images/usage.png" alt="usage" width="200px">
 
-#### ⚠️ A Note About 1.0
+You can find additional examples in the [Examples App](Examples/ExamplesApp.swift)
 
-Was previously supported by Google Charts and only worked while connected to the internet. Interactivity has been deprecated, so has instantiation by just array of SankeyLinks.
+#### ⚠️ v1.0
 
-If you need old support you can just use SPM to target v1.0 or v1.0.1. But I have tried to keep a lot of backwards compatibility. For example the old quick start (link) will render, but probably not how you might expect it to because I've radically changed out colours are handled.
+`Sankey` was previously supported by [Google Charts](https://developers.google.com/chart/interactive/docs/gallery/sankey) and as a consequence only worked while connected to the Internet. Because of the migration to D3 interactivity has been deprecated, so has instantiation by just array of `SankeyLink`.
+
+If you need old support you can just use SPM to target v1.0 or v1.0.1. But I have tried to keep a lot of backwards compatibility. For example the old [Quickstart](https://github.com/maxhumber/Sankey/blob/1.0.1/README.md#quickstart) will render, but probably not how you might expect it to because I've radically changed out colours are handled.
+
+But this new version is a lot better. Supports Dark Mode. And works offline!

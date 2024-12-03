@@ -1,7 +1,7 @@
 import Sankey
 import SwiftUI
 
-struct QuickStartView: View {
+struct QuickstartView: View {
     let data = SankeyData(
         nodes: [
             SankeyNode("A", color: .blue),
@@ -29,7 +29,7 @@ struct QuickStartView: View {
     }
 }
 
-struct OldQuickStartView: View {
+struct OldQuickstartView: View {
     // Create some data
     @State var data: [SankeyLink] = [
         // Option A: ExpressibleByArrayLiteral
@@ -121,12 +121,12 @@ struct UsageExampleView: View {
     }
 }
 
-#Preview("QuickStart") {
-    QuickStartView()
+#Preview("Quickstart") {
+    QuickstartView()
 }
 
-#Preview("OldQuickStart") {
-    OldQuickStartView()
+#Preview("Old Quickstart") {
+    OldQuickstartView()
 }
 
 #Preview("Usage") {
