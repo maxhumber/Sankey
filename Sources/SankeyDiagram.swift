@@ -61,19 +61,28 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .size([width, height]);
         
                 const { nodes, links } = sankey(\(data));
-        
+
+                function getColorForMode(colorData, fallbackColor) {
+                    return (colorData && (isDark ? colorData.dark : colorData.light)) || fallbackColor;
+                }
+
                 function getLinkColor(link) {
+                    const defaultColor = "\(options.linkDefaultColor.hex)";
                     const mode = "\(options.linkColorMode?.rawValue ?? "")";
+                    if (!mode || mode === "") {
+                        return getColorForMode(link.hex, defaultColor);
+                    }
                     if (mode === "source") {
-                        const sourceColor = link.source.hex && (isDark ? link.source.hex.dark : link.source.hex.light);
-                        return sourceColor || "\(options.nodeDefaultColor.hex)";
+                        return getColorForMode(link.source.hex, "\(options.nodeDefaultColor.hex)");
                     }
                     if (mode === "target") {
-                        const targetColor = link.target.hex && (isDark ? link.target.hex.dark : link.target.hex.light);
-                        return targetColor || "\(options.nodeDefaultColor.hex)";
+                        return getColorForMode(link.target.hex, "\(options.nodeDefaultColor.hex)");
                     }
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
+                        const nodeDefault = "\(options.nodeDefaultColor.hex)";
+                        const sourceColor = getColorForMode(link.source.hex, nodeDefault);
+                        const targetColor = getColorForMode(link.target.hex, nodeDefault);
                         const gradient = svg.append("defs")
                             .append("linearGradient")
                             .attr("id", gradientId)
@@ -82,13 +91,13 @@ public struct SankeyDiagram: UIViewRepresentable {
                             .attr("x2", link.target.x0);
                         gradient.append("stop")
                             .attr("offset", "0%")
-                            .attr("stop-color", (link.source.hex && (isDark ? link.source.hex.dark : link.source.hex.light)) || "\(options.nodeDefaultColor.hex)");
+                            .attr("stop-color", sourceColor);
                         gradient.append("stop")
                             .attr("offset", "100%")
-                            .attr("stop-color", (link.target.hex && (isDark ? link.target.hex.dark : link.target.hex.light)) || "\(options.nodeDefaultColor.hex)");
+                            .attr("stop-color", targetColor);
                         return `url(#${gradientId})`;
                     }
-                    return (link.hex && (isDark ? link.hex.dark : link.hex.light)) || "\(options.linkDefaultColor.hex)";
+                    return defaultColor;
                 }
                 
                 function getNodeColor(node) {
@@ -96,7 +105,7 @@ public struct SankeyDiagram: UIViewRepresentable {
                 }
                 
                 function getLabelColor() {
-                    return isDark ? "\(options.labelColor.dark)" : "\(options.labelColor.light)";
+                    return isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)";
                 }
                 
                 const link = svg.append("g")
