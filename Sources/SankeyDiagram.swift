@@ -21,114 +21,9 @@ public struct SankeyDiagram: UIViewRepresentable {
     public func updateUIView(_ webView: WKWebView, context: Context) {
         loadHTML(webView)
     }
-
-    // MARK: - Private Implementation Details
     
-    private func loadHTML(_ webView: WKWebView) {
-        webView.loadHTMLString(generateHTML(), baseURL: nil)
-    }
-
-    private func generateHTML() -> String {
-        """
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body { margin: 0; }
-                svg { width: 100%; height: 100%; }
-            </style>
-        </head>
-        <body>
-            <svg></svg>
-            <script>
-                \(SankeyResources.d3minjs)
-                \(SankeyResources.d3sankeyminjs)
-        
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                const isDark = \(colorScheme == .dark);
-        
-                const svg = d3.select("svg")
-                    .attr("width", width)
-                    .attr("height", height);
-        
-                const sankey = d3.sankey()
-                    .nodeId(d => d.id)
-                    .nodeWidth(\(options.nodeWidth))
-                    .nodePadding(\(options.nodePadding))
-                    .nodeAlign(d3.sankey\(options.nodeAlignment.rawValue))
-                    .size([width, height]);
-        
-                const { nodes, links } = sankey(\(data));
-        
-                const getColor = (colorData, fallback) =>
-                    colorData ? (isDark ? colorData.dark : colorData.light) : fallback;
-        
-                const getLinkColor = link => {
-                    const defaultColor = "\(options.linkDefaultColor.hex(for: colorScheme))";
-                    const mode = "\(options.linkColorMode?.rawValue ?? "")";
-                    if (!mode) return getColor(link.hex, defaultColor);
-                    const sourceColor = getColor(link.source.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))");
-                    const targetColor = getColor(link.target.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))");
-                    if (mode === "source") return sourceColor;
-                    if (mode === "target") return targetColor;
-                    if (mode === "source-target") {
-                        const gradientId = `gradient-${link.index}`;
-                        const gradient = svg.append("defs")
-                            .append("linearGradient")
-                            .attr("id", gradientId)
-                            .attr("gradientUnits", "userSpaceOnUse")
-                            .attr("x1", link.source.x1)
-                            .attr("x2", link.target.x0);
-                        gradient.append("stop").attr("offset", "0%").attr("stop-color", sourceColor);
-                        gradient.append("stop").attr("offset", "100%").attr("stop-color", targetColor);
-                        return `url(#${gradientId})`;
-                    }
-                    return defaultColor;
-                };
-        
-                const link = svg.append("g")
-                    .attr("fill", "none")
-                    .selectAll(".link")
-                    .data(links)
-                    .enter().append("path")
-                    .attr("class", "link")
-                    .attr("d", d3.sankeyLinkHorizontal())
-                    .style("stroke", getLinkColor)
-                    .style("stroke-opacity", \(options.linkOpacity))
-                    .style("stroke-width", link => Math.max(1, link.width));
-        
-                const node = svg.append("g")
-                    .selectAll(".node")
-                    .data(nodes)
-                    .enter().append("g")
-                    .attr("class", "node");
-        
-                node.append("rect")
-                    .attr("x", d => d.x0).attr("y", d => d.y0)
-                    .attr("width", d => d.x1 - d.x0).attr("height", d => d.y1 - d.y0)
-                    .style("fill", d => getColor(d.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))"))
-                    .style("opacity", \(options.nodeOpacity))
-                    .style("stroke", d => getColor(d.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))"));
-        
-                node.append("text")
-                    .attr("font-family", "\(options.labelFontFamily)")
-                    .attr("font-size", \(options.labelFontSize))
-                    .attr("fill", isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)")
-                    .style("opacity", \(options.labelOpacity))
-                    .attr("x", d => d.x0 < width / 2 ? d.x1 + \(options.labelPadding) : d.x0 - \(options.labelPadding))
-                    .attr("y", d => (d.y1 + d.y0) / 2)
-                    .attr("dy", "0.35em")
-                    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
-                    .text(d => d.label || d.id);
-            </script>
-        </body>
-        """
-    }
-}
-
-// MARK: - Public View Modifiers
-
-extension SankeyDiagram {
+    // MARK: - View Modifiers
+    
     /// Sets the horizontal alignment of nodes
     public func nodeAlignment(_ value: SankeyNodeAlignment) -> SankeyDiagram {
         var new = self
@@ -219,17 +114,113 @@ extension SankeyDiagram {
         new.options.labelFontFamily = value
         return new
     }
-}
 
-struct SankeyResources {
-    static let d3minjs: String = loadResource(named: "d3.min", type: "js")
-    static let d3sankeyminjs: String = loadResource(named: "d3-sankey.min", type: "js")
+    // MARK: - Private Implementation Details
     
-    private static func loadResource(named name: String, type: String) -> String {
-        guard let path = Bundle.module.path(forResource: name, ofType: type), let content = try? String(contentsOfFile: path) else {
-            print("\(name).\(type) not found in the bundle")
-            return ""
-        }
-        return content
+    private func loadHTML(_ webView: WKWebView) {
+        webView.loadHTMLString(generateHTML(), baseURL: nil)
+    }
+
+    private func generateHTML() -> String {
+        """
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { margin: 0; }
+                svg { width: 100%; height: 100%; }
+            </style>
+        </head>
+        <body>
+            <svg></svg>
+            <script>
+                \(SankeyResources.d3minjs)
+                \(SankeyResources.d3sankeyminjs)
+        
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                const isDark = \(colorScheme == .dark);
+        
+                const svg = d3.select("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+        
+                const sankey = d3.sankey()
+                    .nodeId(d => d.id)
+                    .nodeWidth(\(options.nodeWidth))
+                    .nodePadding(\(options.nodePadding))
+                    .nodeAlign(d3.sankey\(options.nodeAlignment.rawValue))
+                    .size([width, height]);
+        
+                const { nodes, links } = sankey(\(data));
+        
+                const defaultNodeColor = "\(options.nodeDefaultColor.hex(for: colorScheme))";
+                const defaultLinkColor = "\(options.linkDefaultColor.hex(for: colorScheme))";
+        
+                const getColor = (colorData, fallback) =>
+                    colorData ? (isDark ? colorData.dark : colorData.light) : fallback;
+        
+                const getLinkColor = link => {
+                    const mode = "\(options.linkColorMode?.rawValue ?? "")";
+                    if (!mode) return getColor(link.hex, defaultLinkColor);
+        
+                    const sourceColor = getColor(link.source.hex, defaultNodeColor);
+                    const targetColor = getColor(link.target.hex, defaultNodeColor);
+        
+                    if (mode === "source") return sourceColor;
+                    if (mode === "target") return targetColor;
+                    if (mode === "source-target") {
+                        const gradientId = `gradient-${link.index}`;
+                        const gradient = svg.append("defs")
+                            .append("linearGradient")
+                            .attr("id", gradientId)
+                            .attr("gradientUnits", "userSpaceOnUse")
+                            .attr("x1", link.source.x1)
+                            .attr("x2", link.target.x0);
+                        gradient.append("stop").attr("offset", "0%").attr("stop-color", sourceColor);
+                        gradient.append("stop").attr("offset", "100%").attr("stop-color", targetColor);
+                        return `url(#${gradientId})`;
+                    }
+                    return defaultLinkColor;
+                };
+        
+                const link = svg.append("g")
+                    .attr("fill", "none")
+                    .selectAll(".link")
+                    .data(links)
+                    .enter().append("path")
+                    .attr("class", "link")
+                    .attr("d", d3.sankeyLinkHorizontal())
+                    .style("stroke", getLinkColor)
+                    .style("stroke-opacity", \(options.linkOpacity))
+                    .style("stroke-width", link => Math.max(1, link.width));
+        
+                const node = svg.append("g")
+                    .selectAll(".node")
+                    .data(nodes)
+                    .enter().append("g")
+                    .attr("class", "node");
+        
+                node.append("rect")
+                    .attr("x", d => d.x0).attr("y", d => d.y0)
+                    .attr("width", d => d.x1 - d.x0).attr("height", d => d.y1 - d.y0)
+                    .style("fill", d => getColor(d.hex, defaultNodeColor))
+                    .style("opacity", \(options.nodeOpacity))
+                    .style("stroke", d => getColor(d.hex, defaultNodeColor))
+                    .style("stroke-opacity", \(options.nodeOpacity))
+                    .style("stroke-width", 0);
+        
+                node.append("text")
+                    .attr("font-family", "\(options.labelFontFamily)")
+                    .attr("font-size", \(options.labelFontSize))
+                    .attr("fill", isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)")
+                    .style("opacity", \(options.labelOpacity))
+                    .attr("x", d => d.x0 < width / 2 ? d.x1 + \(options.labelPadding) : d.x0 - \(options.labelPadding))
+                    .attr("y", d => (d.y1 + d.y0) / 2)
+                    .attr("dy", "0.35em")
+                    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
+                    .text(d => d.label || d.id);
+            </script>
+        </body>
+        """
     }
 }
