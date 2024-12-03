@@ -1,15 +1,16 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 5.10
 import PackageDescription
 
 let package = Package(
     name: "Sankey",
-    platforms: [.iOS(.v15), .macOS(.v10_15)],
+    platforms: [
+        .iOS(.v17)
+    ],
     products: [
         .library(name: "Sankey", targets: ["Sankey"]),
     ],
-    dependencies: [],
     targets: [
-        .target(name: "Sankey", dependencies: []),
+        .target(name: "Sankey", resources: [.process("Resources")]),
         .testTarget(name: "SankeyTests", dependencies: ["Sankey"]),
     ]
 )
