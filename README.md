@@ -1,8 +1,6 @@
-
 <div align="center">
   <img src="Images/logo.png" width="150px" alt="logo">
 </div>
-
 #### About
 
 Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
@@ -56,16 +54,16 @@ struct QuickStartView: View {
 
 #### Installation
 
-Integrate `Sankey` into your project using Swift Package Manager:
+Add `Sankey` to your project using Swift Package Manager:
 
 1. In Xcode, select your project in the Project Navigator
-2. Go to the Package Dependencies tab
-3. Click the + button to add a package dependency
-4. In the search bar, enter: `https://github.com/maxhumber/Sankey`
+2. Navigate to Package Dependencies
+3. Click the + button
+4. Enter the repository URL: `https://github.com/maxhumber/Sankey`
 
 #### Usage
 
-`SankeyDiagram` objects are highly customizable and even support dark mode! All of the customization options are available as modifiers on a `SankeyDiagram` themselves:
+Customize `SankeyDiagram` with simple modifiers:
 
 ```swift
 struct UsageExampleView: View {
@@ -126,12 +124,16 @@ struct UsageExampleView: View {
 
 <img src="Images/usage.png" alt="usage" width="200px">
 
-You can find additional examples in the [Examples App](Examples/ExamplesApp.swift)
+Find more examples in the [Examples App](Examples/ExamplesApp.swift).
 
-#### ⚠️ v1.0
+#### ⚠️ Version Compatibility
 
-`Sankey` was previously supported by [Google Charts](https://developers.google.com/chart/interactive/docs/gallery/sankey) and as a consequence only worked while connected to the Internet. Because of the migration to D3 interactivity has been deprecated, so has instantiation by just array of `SankeyLink`.
+> **Note**: Version `2.0`+ uses D3 for rendering. For projects requiring the previous Google Charts implementation, use version `1.0`/`1.0.1` via SPM.
 
-If you need old support you can just use SPM to target v1.0 or v1.0.1. But I have tried to keep a lot of backwards compatibility. For example the old [Quickstart](https://github.com/maxhumber/Sankey/blob/1.0.1/README.md#quickstart) will render, but probably not how you might expect it to because I've radically changed out colours are handled.
+Key differences in `2.0`+:
+- Streamlined API
+- Improved color handling
+- Built-in dark mode
+- Offline rendering support
 
-But this new version is a lot better. Supports Dark Mode. And works offline!
+For legacy implementation details, see the [v1.0.1 documentation](https://github.com/maxhumber/Sankey/blob/1.0.1/README.md#quickstart).
