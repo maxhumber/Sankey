@@ -20,7 +20,7 @@ struct CustomizableSankeyView: View {
         nodes: [
             SankeyNode("A"),
             SankeyNode("B", color: .blue),
-            SankeyNode("X"),
+            SankeyNode("X", label: "Toronto"),
             SankeyNode("Y"),
             SankeyNode("Z", color: .green),
         ],

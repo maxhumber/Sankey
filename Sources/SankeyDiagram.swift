@@ -122,7 +122,7 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .attr("y", node => (node.y1 + node.y0) / 2)
                     .attr("dy", "0.35em")
                     .attr("text-anchor", node => node.x0 < width / 2 ? "start" : "end")
-                    .text(node => node.id);
+                    .text(node => node.label || node.id);
             </script>
         </body>
         """
