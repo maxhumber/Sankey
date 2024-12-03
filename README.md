@@ -8,7 +8,7 @@ Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
 
 Make beautiful charts like this:
 
-<img src="Images/quickstart.png" width="200px" alt="quickstart"/>
+<img src="Images/quick.png" width="200px" alt="quick"/>
 
 With code as simple as this:
 
