@@ -1,7 +1,7 @@
 import Sankey
 import SwiftUI
 
-struct CustomizableSankeyView: View {
+struct CustomizableView: View {
     @State private var nodeAlignment: SankeyNodeAlignment = .justify
     @State private var nodeWidth: Double = 8
     @State private var nodePadding: Double = 24
@@ -10,11 +10,11 @@ struct CustomizableSankeyView: View {
     @State private var linkDefaultColor: Color = .gray
     @State private var linkOpacity: Double = 0.2
     @State private var linkColorMode: SankeyLinkColorMode? = nil
+    @State private var labelPadding: Double = 8
+    @State private var labelColor: Color = .primary
+    @State private var labelOpacity: Double = 0.8
     @State private var labelFontSize: Double = 14
     @State private var labelFontFamily: String = "Times"
-    @State private var labelOpacity: Double = 0.8
-    @State private var labelColor: Color = .primary
-    @State private var labelPadding: Double = 8
     
     let data = SankeyData(
         nodes: [
@@ -140,5 +140,5 @@ struct CustomizableSankeyView: View {
 }
 
 #Preview {
-    CustomizableSankeyView()
+    CustomizableView()
 }

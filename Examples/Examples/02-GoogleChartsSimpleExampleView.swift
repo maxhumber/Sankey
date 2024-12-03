@@ -2,6 +2,8 @@ import Sankey
 import SwiftUI
 
 struct GoogleChartsSimpleExampleView: View {
+    @State var colorMode: SankeyLinkColorMode? = nil
+    
     let data = SankeyData(
         nodes: [
             SankeyNode("A", color: .blue),
@@ -21,11 +23,21 @@ struct GoogleChartsSimpleExampleView: View {
     )
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             SankeyDiagram(data)
                 .nodeOpacity(0.9)
+                .linkColorMode(colorMode)
                 .padding(10)
                 .frame(height: 350)
+            Button {
+                if colorMode == nil {
+                    colorMode = .sourceTarget
+                } else if colorMode == .sourceTarget {
+                    colorMode = nil
+                }
+            } label: {
+                Text("Toggle Colors")
+            }
             Link("Inspiration", destination: URL(string:  "https://developers.google.com/chart/interactive/docs/gallery/sankey")!)
         }
     }
