@@ -1,6 +1,5 @@
-<div align="center">
-  <img src="Images/logo.png" width="150px" alt="logo">
-</div>
+<img src="Images/logo.png" width="150px" alt="logo"/>
+
 #### About
 
 Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
@@ -9,9 +8,7 @@ Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
 
 Make beautiful charts like this:
 
-<img src="Images/quickstart.png" width="200px" alt="quickstart">
-
-
+<img src="Images/quickstart.png" width="200px" alt="quickstart"/>
 
 With code as simple as this:
 
@@ -122,7 +119,7 @@ struct UsageExampleView: View {
 }
 ```
 
-<img src="Images/usage.png" alt="usage" width="200px">
+<img src="Images/usage.png" alt="usage" width="200px"/>
 
 Find more examples in the [Examples App](Examples/ExamplesApp.swift).
 
