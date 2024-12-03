@@ -38,7 +38,7 @@ struct QuickStartView: View {
     var body: some View {
         SankeyDiagram(data)
             .nodeOpacity(0.9)
-            .linkColorMode(.sourceTarget)
+            .linkColorMode(.gradient)
             .padding(10)
             .frame(height: 350)
     }
@@ -130,7 +130,7 @@ Find more examples in the [Examples App](Examples/Examples/ExamplesApp.swift).
 Key differences in `2.0`+:
 - Streamlined API
 - Improved color handling
-- Built-in dark mode
-- Offline rendering support
+- Built-in dark mode support
+- Offline rendering!
 
 For legacy implementation details, see the [v1.0.1 documentation](https://github.com/maxhumber/Sankey/blob/1.0.1/README.md#quickstart).
