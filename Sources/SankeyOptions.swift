@@ -1,17 +1,16 @@
-import Foundation
 import SwiftUI
 
 struct SankeyOptions {
     var nodeAlignment: SankeyNodeAlignment = .justify
     var nodeWidth: Double = 8
     var nodePadding: Double = 24
-    var nodeDefaultColor: Color = Color(hex: "#666666")
+    var nodeDefaultColor: Color = .primary
     var nodeOpacity: Double = 0.6
-    var linkDefaultColor: Color = Color(hex: "#888888")
+    var linkDefaultColor: Color = .primary
     var linkOpacity: Double = 0.2
     var linkColorMode: SankeyLinkColorMode? = nil
     var labelPadding: Double = 8
-    var labelColor: Color = Color(hex: "#222222")
+    var labelColor: Color = .primary
     var labelOpacity: Double = 0.8
     var labelFontSize: Double = 16
     var labelFontFamily: String = "-apple-system, BlinkMacSystemFont, sans-serif"

@@ -22,6 +22,10 @@ extension Color {
         return String(format: "#%02X%02X%02X", Int(red * 255), Int(green * 255), Int(blue * 255))
     }
     
+    func hex(for colorScheme: ColorScheme) -> String {
+        colorScheme == .dark ? dark.hex : light.hex
+    }
+    
     var light: Color {
         var environment = EnvironmentValues()
         environment.colorScheme = .light

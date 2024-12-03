@@ -6,6 +6,7 @@ struct DefaultSankeyView: View {
     
     var body: some View {
         SankeyDiagram(data)
+            .nodeDefaultColor(.primary)
             .padding(10)
             .frame(height: 250)
     }

@@ -34,17 +34,15 @@ public struct SankeyDiagram: UIViewRepresentable {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
                 body { margin: 0; }
-                svg { 
-                    width: 100%; 
-                    height: 100%;
-                }
+                svg { width: 100%; height: 100%; }
             </style>
         </head>
         <body>
             <svg></svg>
-            <script>\(SankeyResources.d3minjs)</script>
-            <script>\(SankeyResources.d3sankeyminjs)</script>
             <script>
+                \(SankeyResources.d3minjs)
+                \(SankeyResources.d3sankeyminjs)
+        
                 const width = window.innerWidth;
                 const height = window.innerHeight;
                 const isDark = \(colorScheme == .dark);
@@ -61,59 +59,38 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .size([width, height]);
         
                 const { nodes, links } = sankey(\(data));
-
-                function getColorForMode(colorData, fallbackColor) {
-                    return (colorData && (isDark ? colorData.dark : colorData.light)) || fallbackColor;
-                }
-
-                function getLinkColor(link) {
-                    const defaultColor = "\(options.linkDefaultColor.hex)";
+        
+                const getColor = (colorData, fallback) =>
+                    colorData ? (isDark ? colorData.dark : colorData.light) : fallback;
+        
+                const getLinkColor = link => {
+                    const defaultColor = "\(options.linkDefaultColor.hex(for: colorScheme))";
                     const mode = "\(options.linkColorMode?.rawValue ?? "")";
-                    if (!mode || mode === "") {
-                        return getColorForMode(link.hex, defaultColor);
-                    }
-                    if (mode === "source") {
-                        return getColorForMode(link.source.hex, "\(options.nodeDefaultColor.hex)");
-                    }
-                    if (mode === "target") {
-                        return getColorForMode(link.target.hex, "\(options.nodeDefaultColor.hex)");
-                    }
+                    if (!mode) return getColor(link.hex, defaultColor);
+                    const sourceColor = getColor(link.source.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))");
+                    const targetColor = getColor(link.target.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))");
+                    if (mode === "source") return sourceColor;
+                    if (mode === "target") return targetColor;
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
-                        const nodeDefault = "\(options.nodeDefaultColor.hex)";
-                        const sourceColor = getColorForMode(link.source.hex, nodeDefault);
-                        const targetColor = getColorForMode(link.target.hex, nodeDefault);
                         const gradient = svg.append("defs")
                             .append("linearGradient")
                             .attr("id", gradientId)
                             .attr("gradientUnits", "userSpaceOnUse")
                             .attr("x1", link.source.x1)
                             .attr("x2", link.target.x0);
-                        gradient.append("stop")
-                            .attr("offset", "0%")
-                            .attr("stop-color", sourceColor);
-                        gradient.append("stop")
-                            .attr("offset", "100%")
-                            .attr("stop-color", targetColor);
+                        gradient.append("stop").attr("offset", "0%").attr("stop-color", sourceColor);
+                        gradient.append("stop").attr("offset", "100%").attr("stop-color", targetColor);
                         return `url(#${gradientId})`;
                     }
                     return defaultColor;
-                }
-                
-                function getNodeColor(node) {
-                    return (node.hex && (isDark ? node.hex.dark : node.hex.light)) || "\(options.nodeDefaultColor.hex)";
-                }
-                
-                function getLabelColor() {
-                    return isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)";
-                }
-                
+                };
+        
                 const link = svg.append("g")
                     .attr("fill", "none")
                     .selectAll(".link")
                     .data(links)
-                    .enter()
-                    .append("path")
+                    .enter().append("path")
                     .attr("class", "link")
                     .attr("d", d3.sankeyLinkHorizontal())
                     .style("stroke", getLinkColor)
@@ -123,31 +100,26 @@ public struct SankeyDiagram: UIViewRepresentable {
                 const node = svg.append("g")
                     .selectAll(".node")
                     .data(nodes)
-                    .enter()
-                    .append("g")
+                    .enter().append("g")
                     .attr("class", "node");
         
                 node.append("rect")
-                    .attr("x", node => node.x0)
-                    .attr("y", node => node.y0)
-                    .attr("width", node => node.x1 - node.x0)
-                    .attr("height", node => node.y1 - node.y0)
-                    .style("fill", getNodeColor)
+                    .attr("x", d => d.x0).attr("y", d => d.y0)
+                    .attr("width", d => d.x1 - d.x0).attr("height", d => d.y1 - d.y0)
+                    .style("fill", d => getColor(d.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))"))
                     .style("opacity", \(options.nodeOpacity))
-                    .style("stroke", getNodeColor)
-                    .style("stroke-width", 0)
-                    .style("stroke-opacity", \(options.nodeOpacity));
+                    .style("stroke", d => getColor(d.hex, "\(options.nodeDefaultColor.hex(for: colorScheme))"));
         
                 node.append("text")
                     .attr("font-family", "\(options.labelFontFamily)")
                     .attr("font-size", \(options.labelFontSize))
-                    .attr("fill", getLabelColor)
+                    .attr("fill", isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)")
                     .style("opacity", \(options.labelOpacity))
-                    .attr("x", node => node.x0 < width / 2 ? node.x1 + \(options.labelPadding) : node.x0 - \(options.labelPadding))
-                    .attr("y", node => (node.y1 + node.y0) / 2)
+                    .attr("x", d => d.x0 < width / 2 ? d.x1 + \(options.labelPadding) : d.x0 - \(options.labelPadding))
+                    .attr("y", d => (d.y1 + d.y0) / 2)
                     .attr("dy", "0.35em")
-                    .attr("text-anchor", node => node.x0 < width / 2 ? "start" : "end")
-                    .text(node => node.label || node.id);
+                    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
+                    .text(d => d.label || d.id);
             </script>
         </body>
         """
