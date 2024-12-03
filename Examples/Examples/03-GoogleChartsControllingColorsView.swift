@@ -1,5 +1,3 @@
-// https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors
-
 @testable import Sankey
 import SwiftUI
 
@@ -75,14 +73,17 @@ struct GoogleChartsControllingColorsView: View {
 
     var body: some View {
         GeometryReader { geo in
-            SankeyDiagram(data)
-                .nodePadding(6)
-                .nodeOpacity(0.6)
-                .linkColorMode(.sourceTarget)
-                .linkOpacity(0.3)
-                .labelFontSize(12)
-                .padding(10)
-                .frame(height: geo.size.height * 0.8)
+            VStack {
+                SankeyDiagram(data)
+                    .nodePadding(6)
+                    .nodeOpacity(0.6)
+                    .linkColorMode(.sourceTarget)
+                    .linkOpacity(0.3)
+                    .labelFontSize(12)
+                    .padding(10)
+                    .frame(height: geo.size.height * 0.8)
+                Link("Inspiration", destination: URL(string: "https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors")!)
+            }
         }
     }
 }

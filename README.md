@@ -1,11 +1,10 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/maxhumber/Sankey/master/Images/logo.png" width="250px" alt="logo">
+  <img src="Images/logo.png" width="150px" alt="logo">
 </div>
-
 
 ### About
 
-Sankey diagrams in SwiftUI, powered by [Google Charts](https://developers.google.com/chart)<sup>‡</sup>
+Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
 
 
 
@@ -307,9 +306,3 @@ dependencies: [
     .package(url: "https://github.com/maxhumber/Sankey.git", .upToNextMajor(from: "1.0"))
 ]
 ```
-
-
-
-### Fine Print
-
-<sup>‡ Active network connection required</sup>

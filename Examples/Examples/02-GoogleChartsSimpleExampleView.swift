@@ -1,5 +1,3 @@
-// https://developers.google.com/chart/interactive/docs/gallery/sankey
-
 import Sankey
 import SwiftUI
 
@@ -23,10 +21,13 @@ struct GoogleChartsSimpleExampleView: View {
     )
     
     var body: some View {
-        SankeyDiagram(data)
-            .nodeOpacity(0.9)
-            .padding(10)
-            .frame(height: 350)
+        VStack {
+            SankeyDiagram(data)
+                .nodeOpacity(0.9)
+                .padding(10)
+                .frame(height: 350)
+            Link("Inspiration", destination: URL(string:  "https://developers.google.com/chart/interactive/docs/gallery/sankey")!)
+        }
     }
 }
 

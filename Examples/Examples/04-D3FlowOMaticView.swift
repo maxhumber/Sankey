@@ -1,5 +1,3 @@
-// https://observablehq.com/@mbostock/flow-o-matic
-
 @testable import Sankey
 import SwiftUI
 
@@ -49,15 +47,20 @@ struct D3FlowOMaticView: View {
     )
 
     var body: some View {
-        SankeyDiagram(data)
-            .nodePadding(4)
-            .nodeDefaultColor(Color(hex: "#999999"))
-            .nodeOpacity(0.9)
-            .linkDefaultColor(Color(hex: "#BBBBBB"))
-            .linkOpacity(0.8)
-            .labelFontSize(10)
-            .padding(10)
-            .frame(height: 600)
+        GeometryReader { geo in
+            VStack {
+                SankeyDiagram(data)
+                    .nodePadding(4)
+                    .nodeDefaultColor(Color(hex: "#999999"))
+                    .nodeOpacity(0.9)
+                    .linkDefaultColor(Color(hex: "#CCCCCC"))
+                    .linkOpacity(0.8)
+                    .labelFontSize(10)
+                    .padding(10)
+                    .frame(height: geo.size.height * 0.8)
+                Link("Inspiration", destination: URL(string: "https://observablehq.com/@mbostock/flow-o-matic")!)
+            }
+        }
     }
 }
 
