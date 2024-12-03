@@ -46,7 +46,7 @@ extension SankeyDiagram {
         nodeLabelPadding: Double? = nil,
         nodeInteractivity: Bool? = nil,
         linkColors: [String]? = nil,
-        linkColorMode: String? = nil,
+        linkColorMode: SankeyLinkColorMode? = nil,
         linkColorFill: String? = nil,
         linkColorFillOpacity: Double? = nil,
         linkColorStroke: String? = nil,
@@ -74,7 +74,7 @@ extension SankeyDiagram {
         options.labelPadding = nodeLabelPadding ?? options.labelPadding
         // nodeInteractivity - Deprecated
         // linkColors - Deprecated
-        // linkColorMode - Deprecated
+        options.linkColorMode = linkColorMode
         options.linkDefaultColor = linkColorFill.map { Color(hex: $0) } ?? options.linkDefaultColor
         options.linkOpacity = linkColorFillOpacity ?? options.linkOpacity
         // linkColorStroke - Deprecated

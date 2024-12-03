@@ -77,7 +77,7 @@ struct GoogleChartsControllingColorsView: View {
                 SankeyDiagram(data)
                     .nodePadding(6)
                     .nodeOpacity(0.6)
-                    .linkColorMode(.sourceTarget)
+                    .linkColorMode(.gradient)
                     .linkOpacity(0.3)
                     .labelFontSize(12)
                     .padding(10)

@@ -31,8 +31,8 @@ struct GoogleChartsSimpleExampleView: View {
                 .frame(height: 350)
             Button {
                 if colorMode == nil {
-                    colorMode = .sourceTarget
-                } else if colorMode == .sourceTarget {
+                    colorMode = .gradient
+                } else if colorMode == .gradient {
                     colorMode = nil
                 }
             } label: {

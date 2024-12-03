@@ -109,7 +109,7 @@ struct CustomizableView: View {
                     Text("None").tag(SankeyLinkColorMode?.none)
                     Text("Source").tag(SankeyLinkColorMode.source)
                     Text("Target").tag(SankeyLinkColorMode.target)
-                    Text("Source-Target").tag(SankeyLinkColorMode.sourceTarget)
+                    Text("Gradient").tag(SankeyLinkColorMode.gradient)
                 }
                 .labelsHidden()
             }

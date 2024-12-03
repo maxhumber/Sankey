@@ -1,23 +1,3 @@
-
-<div align="center">
-  <img src="Images/logo.png" width="150px" alt="logo">
-</div>
-
-#### About
-
-Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
-
-#### Quickstart
-
-Make beautiful charts like this:
-
-<img src="Images/quickstart.png" width="200px" alt="quickstart">
-
-
-
-With code as simple as this:
-
-```swift
 import Sankey
 import SwiftUI
 
@@ -43,29 +23,54 @@ struct QuickStartView: View {
     var body: some View {
         SankeyDiagram(data)
             .nodeOpacity(0.9)
-            .linkColorMode(.sourceTarget)
+            .linkColorMode(.gradient)
             .padding(10)
             .frame(height: 350)
     }
 }
-```
 
-#### Installation
+struct OldQuickStartView: View {
+    // Create some data
+    @State var data: [SankeyLink] = [
+        // Option A: ExpressibleByArrayLiteral
+        ["A", "X", "5"],
+        ["A", "Y", "7"],
+        ["A", "Z", "6"],
+        ["B", "X", "2"],
+        ["B", "Y", "9"],
+        ["B", "Z", "4"]
+    ]
+    
+    var body: some View {
+        GeometryReader { geo in
+            VStack(spacing: 20) {
+                Text("Sankeys in SwiftUI!")
+                    .font(.title3.bold())
+                    .padding(.top, 20)
+                // Native SwiftUI Component
+                SankeyDiagram(
+                    data,
+                    nodeLabelFontSize: 50,
+                    nodeInteractivity: true,
+                    linkColorMode: .gradient,
+                    tooltipTextFontSize: 50
+                )
+                // Will take up full View, unless you constrain it...
+                .frame(height: geo.size.height * 0.5)
+                Button {
+                    data.append(
+                        // Option B: Struct
+                        SankeyLink(source: "C", target: "X", value: 3)
+                    )
+                } label: {
+                    Text("Add a new link")
+                }
+                Text("Lorem Ipsum...")
+            }
+        }
+    }
+}
 
-You can integrate `Sankey` into your project using Swift Package Manager:
-
-1. In Xcode, select your project in the Project Navigator
-2. Go to the Package Dependencies tab
-3. Click the + button to add a package dependency
-4. In the search bar, enter the repository URL for: `https://github.com/maxhumber/Sankey`
-
-#### Usage
-
-You can find some examples in the example app (link)
-
-SankeyDiagrams are highly customizable and support dark mode! All of the customization options are available as modifiers on a SankeyDiagram themselves:
-
-```swift
 struct UsageExampleView: View {
     let data = SankeyData(
         nodes: [
@@ -115,12 +120,16 @@ struct UsageExampleView: View {
             .frame(height: 400)
     }
 }
-```
 
-<img src="Images/usage.png" alt="usage" width="200px">
+#Preview("QuickStart") {
+    QuickStartView()
+}
 
-#### ⚠️ A Note About 1.0
+#Preview("OldQuickStart") {
+    OldQuickStartView()
+}
 
-Was previously supported by Google Charts and only worked while connected to the internet. Interactivity has been deprecated, so has instantiation by just array of SankeyLinks.
-
-If you need old support you can just use SPM to target v1.0 or v1.0.1. But I have tried to keep a lot of backwards compatibility. For example the old quick start (link) will render, but probably not how you might expect it to because I've radically changed out colours are handled.
+#Preview("Usage") {
+    UsageExampleView()
+        .preferredColorScheme(.dark)
+}

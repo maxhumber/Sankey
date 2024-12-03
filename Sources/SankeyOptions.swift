@@ -20,7 +20,7 @@ struct SankeyOptions {
 public enum SankeyLinkColorMode: String {
     case source
     case target
-    case sourceTarget = "source-target"
+    case gradient = "source-target"
 }
 
 /// Specifies how nodes are aligned horizontally in a Sankey Diagram
