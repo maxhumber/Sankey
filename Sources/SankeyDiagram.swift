@@ -2,6 +2,7 @@ import SwiftUI
 import WebKit
 
 public struct SankeyDiagram: UIViewRepresentable {
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     public var data: SankeyData
     var options = SankeyOptions()
 
@@ -46,6 +47,7 @@ public struct SankeyDiagram: UIViewRepresentable {
             <script>
                 const width = window.innerWidth;
                 const height = window.innerHeight;
+                const isDark = \(colorScheme == .dark);
         
                 const svg = d3.select("svg")
                     .attr("width", width)
@@ -62,8 +64,14 @@ public struct SankeyDiagram: UIViewRepresentable {
         
                 function getLinkColor(link) {
                     const mode = "\(options.linkColorMode?.rawValue ?? "")";
-                    if (mode === "source") return (link.source.hex && link.source.hex.light) || "\(options.nodeDefaultColor.hex)";
-                    if (mode === "target") return (link.target.hex && link.target.hex.light) || "\(options.nodeDefaultColor.hex)";
+                    if (mode === "source") {
+                        const sourceColor = link.source.hex && (isDark ? link.source.hex.dark : link.source.hex.light);
+                        return sourceColor || "\(options.nodeDefaultColor.hex)";
+                    }
+                    if (mode === "target") {
+                        const targetColor = link.target.hex && (isDark ? link.target.hex.dark : link.target.hex.light);
+                        return targetColor || "\(options.nodeDefaultColor.hex)";
+                    }
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
                         const gradient = svg.append("defs")
@@ -74,13 +82,21 @@ public struct SankeyDiagram: UIViewRepresentable {
                             .attr("x2", link.target.x0);
                         gradient.append("stop")
                             .attr("offset", "0%")
-                            .attr("stop-color", (link.source.hex && link.source.hex.light) || "\(options.nodeDefaultColor.hex)");
+                            .attr("stop-color", (link.source.hex && (isDark ? link.source.hex.dark : link.source.hex.light)) || "\(options.nodeDefaultColor.hex)");
                         gradient.append("stop")
                             .attr("offset", "100%")
-                            .attr("stop-color", (link.target.hex && link.target.hex.light) || "\(options.nodeDefaultColor.hex)");
+                            .attr("stop-color", (link.target.hex && (isDark ? link.target.hex.dark : link.target.hex.light)) || "\(options.nodeDefaultColor.hex)");
                         return `url(#${gradientId})`;
                     }
-                    return (link.hex && link.hex.light) || "\(options.linkDefaultColor.hex)";
+                    return (link.hex && (isDark ? link.hex.dark : link.hex.light)) || "\(options.linkDefaultColor.hex)";
+                }
+                
+                function getNodeColor(node) {
+                    return (node.hex && (isDark ? node.hex.dark : node.hex.light)) || "\(options.nodeDefaultColor.hex)";
+                }
+                
+                function getLabelColor() {
+                    return isDark ? "\(options.labelColor.dark)" : "\(options.labelColor.light)";
                 }
                 
                 const link = svg.append("g")
@@ -107,16 +123,16 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .attr("y", node => node.y0)
                     .attr("width", node => node.x1 - node.x0)
                     .attr("height", node => node.y1 - node.y0)
-                    .style("fill", node => (node.hex && node.hex.light) || "\(options.nodeDefaultColor.hex)")
+                    .style("fill", getNodeColor)
                     .style("opacity", \(options.nodeOpacity))
-                    .style("stroke", node => (node.hex && node.hex.light) || "\(options.nodeDefaultColor.hex)")
+                    .style("stroke", getNodeColor)
                     .style("stroke-width", 0)
                     .style("stroke-opacity", \(options.nodeOpacity));
         
                 node.append("text")
                     .attr("font-family", "\(options.labelFontFamily)")
                     .attr("font-size", \(options.labelFontSize))
-                    .attr("fill", "\(options.labelColor.hex)")
+                    .attr("fill", getLabelColor)
                     .style("opacity", \(options.labelOpacity))
                     .attr("x", node => node.x0 < width / 2 ? node.x1 + \(options.labelPadding) : node.x0 - \(options.labelPadding))
                     .attr("y", node => (node.y1 + node.y0) / 2)

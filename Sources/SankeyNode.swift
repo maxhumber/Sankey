@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 public struct SankeyNode: Encodable, Identifiable {
@@ -29,7 +28,7 @@ public struct SankeyNode: Encodable, Identifiable {
         try container.encodeIfPresent(hex, forKey: .hex)
     }
     
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id
         case label
         case hex

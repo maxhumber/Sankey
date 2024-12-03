@@ -13,12 +13,12 @@ struct CustomizableSankeyView: View {
     @State private var labelFontSize: Double = 14
     @State private var labelFontFamily: String = "Times"
     @State private var labelOpacity: Double = 0.8
-    @State private var labelColor: Color = .black
+    @State private var labelColor: Color = .primary
     @State private var labelPadding: Double = 8
     
     let data = SankeyData(
         nodes: [
-            SankeyNode("A"),
+            SankeyNode("A", color: .primary),
             SankeyNode("B", color: .blue),
             SankeyNode("X", label: "Toronto"),
             SankeyNode("Y"),
@@ -29,7 +29,7 @@ struct CustomizableSankeyView: View {
             SankeyLink(7, from: "A", to: "Y"),
             SankeyLink(6, from: "A", to: "Z"),
             SankeyLink(2, from: "B", to: "X"),
-            SankeyLink(9, from: "B", to: "Y", color: .blue),
+            SankeyLink(9, from: "B", to: "Y", color: .primary),
             SankeyLink(4, from: "B", to: "Z"),
         ]
     )

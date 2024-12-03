@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 public struct SankeyLink: Encodable {
@@ -33,7 +32,7 @@ public struct SankeyLink: Encodable {
         try container.encode(hex, forKey: .hex)
     }
     
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case value
         case source
         case target
