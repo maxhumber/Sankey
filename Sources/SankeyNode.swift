@@ -1,14 +1,13 @@
 import Foundation
 import SwiftUI
 
-public struct SankeyNode: Codable, Identifiable {
+public struct SankeyNode: Encodable, Identifiable {
     public var id: String
     public var label: String?
-    var hex: String? // stored hex color value
+    public var color: Color?
     
-    public var color: Color? { // computed SwiftUI color
-        get { hex.flatMap { Color(hex: $0) } }
-        set { hex = newValue?.hex }
+    var hex: HexColor? {
+        color.map { HexColor($0) }
     }
     
     /// Initializes a new instance of `SankeyNode`
@@ -20,6 +19,19 @@ public struct SankeyNode: Codable, Identifiable {
     public init(_ id: String, label: String? = nil, color: Color? = nil) {
         self.id = id
         self.label = label
-        self.hex = color?.hex
+        self.color = color
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(label, forKey: .label)
+        try container.encodeIfPresent(hex, forKey: .hex)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case label
+        case hex
     }
 }

@@ -21,4 +21,16 @@ extension Color {
         uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         return String(format: "#%02X%02X%02X", Int(red * 255), Int(green * 255), Int(blue * 255))
     }
+    
+    var light: Color {
+        var environment = EnvironmentValues()
+        environment.colorScheme = .light
+        return Color(resolve(in: environment))
+    }
+    
+    var dark: Color {
+        var environment = EnvironmentValues()
+        environment.colorScheme = .dark
+        return Color(resolve(in: environment))
+    }
 }

@@ -62,8 +62,8 @@ public struct SankeyDiagram: UIViewRepresentable {
         
                 function getLinkColor(link) {
                     const mode = "\(options.linkColorMode?.rawValue ?? "")";
-                    if (mode === "source") return link.source.hex || "\(options.nodeDefaultHex)";
-                    if (mode === "target") return link.target.hex || "\(options.nodeDefaultHex)";
+                    if (mode === "source") return (link.source.hex && link.source.hex.light) || "\(options.nodeDefaultColor.hex)";
+                    if (mode === "target") return (link.target.hex && link.target.hex.light) || "\(options.nodeDefaultColor.hex)";
                     if (mode === "source-target") {
                         const gradientId = `gradient-${link.index}`;
                         const gradient = svg.append("defs")
@@ -74,13 +74,13 @@ public struct SankeyDiagram: UIViewRepresentable {
                             .attr("x2", link.target.x0);
                         gradient.append("stop")
                             .attr("offset", "0%")
-                            .attr("stop-color", link.source.hex || "\(options.nodeDefaultHex)");
+                            .attr("stop-color", (link.source.hex && link.source.hex.light) || "\(options.nodeDefaultColor.hex)");
                         gradient.append("stop")
                             .attr("offset", "100%")
-                            .attr("stop-color", link.target.hex || "\(options.nodeDefaultHex)");
+                            .attr("stop-color", (link.target.hex && link.target.hex.light) || "\(options.nodeDefaultColor.hex)");
                         return `url(#${gradientId})`;
                     }
-                    return link.hex || "\(options.linkDefaultHex)";
+                    return (link.hex && link.hex.light) || "\(options.linkDefaultColor.hex)";
                 }
                 
                 const link = svg.append("g")
@@ -107,16 +107,16 @@ public struct SankeyDiagram: UIViewRepresentable {
                     .attr("y", node => node.y0)
                     .attr("width", node => node.x1 - node.x0)
                     .attr("height", node => node.y1 - node.y0)
-                    .style("fill", node => node.hex || "\(options.nodeDefaultHex)")
+                    .style("fill", node => (node.hex && node.hex.light) || "\(options.nodeDefaultColor.hex)")
                     .style("opacity", \(options.nodeOpacity))
-                    .style("stroke", node => node.hex || "\(options.nodeDefaultHex)")
+                    .style("stroke", node => (node.hex && node.hex.light) || "\(options.nodeDefaultColor.hex)")
                     .style("stroke-width", 0)
                     .style("stroke-opacity", \(options.nodeOpacity));
         
                 node.append("text")
                     .attr("font-family", "\(options.labelFontFamily)")
                     .attr("font-size", \(options.labelFontSize))
-                    .attr("fill", "\(options.labelHex)")
+                    .attr("fill", "\(options.labelColor.hex)")
                     .style("opacity", \(options.labelOpacity))
                     .attr("x", node => node.x0 < width / 2 ? node.x1 + \(options.labelPadding) : node.x0 - \(options.labelPadding))
                     .attr("y", node => (node.y1 + node.y0) / 2)
@@ -156,7 +156,7 @@ extension SankeyDiagram {
     /// Sets the default color for nodes
     public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {
         var new = self
-        new.options.nodeDefaultHex = color.hex
+        new.options.nodeDefaultColor = color
         return new
     }
     
@@ -170,7 +170,7 @@ extension SankeyDiagram {
     /// Sets the default color for links
     public func linkDefaultColor(_ color: Color) -> SankeyDiagram {
         var new = self
-        new.options.linkDefaultHex = color.hex
+        new.options.linkDefaultColor = color
         return new
     }
     
@@ -198,7 +198,7 @@ extension SankeyDiagram {
     /// Sets the color of labels
     public func labelColor(_ color: Color) -> SankeyDiagram {
         var new = self
-        new.options.labelHex = color.hex
+        new.options.labelColor = color
         return new
     }
     

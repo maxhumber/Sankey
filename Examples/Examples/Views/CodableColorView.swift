@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+@testable import Sankey
 
 extension Color {
     var light: Color {
@@ -118,12 +119,15 @@ struct Node: Codable, DynamicProperty {
 struct CodableColorView: View {
     @Environment(\.colorScheme) var colorScheme
     let node = Node(label: "Red", color: .primary)
+    let hexColor = HexColor(.primary)
     
     var body: some View {
         VStack {
             Text(node.hex.light)
             Text(node.hex.dark)
             Rectangle().fill(node.color)
+            Text(hexColor.light)
+            Text(hexColor.dark)
         }
     }
 }

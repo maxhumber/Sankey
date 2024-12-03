@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SankeyData: Codable, CustomStringConvertible {
+public struct SankeyData: Encodable, CustomStringConvertible {
     public var nodes: [SankeyNode]
     public var links: [SankeyLink]
     
