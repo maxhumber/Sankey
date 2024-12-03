@@ -121,7 +121,7 @@ struct UsageExampleView: View {
 
 <img src="Images/usage.png" alt="usage" width="200px"/>
 
-Find more examples in the [Examples App](Examples/ExamplesApp.swift).
+Find more examples in the [Examples App](Examples/Examples/ExamplesApp.swift).
 
 #### ⚠️ Version Compatibility
 
