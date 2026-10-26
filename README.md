@@ -2,15 +2,11 @@
 
 #### About
 
-Sankey diagrams in SwiftUI, powered by [D3](https://github.com/d3/d3-sankey).
+Native Sankey diagrams in SwiftUI
 
 #### Quickstart
 
-Make beautiful charts like this:
-
-<img src="Images/quick.png" width="200px" alt="quick"/>
-
-With code as simple as this:
+<img src="Images/quick.png" width="360px" alt="Sankey diagram in light mode"/>
 
 ```swift
 import Sankey
@@ -37,7 +33,6 @@ struct QuickStartView: View {
     
     var body: some View {
         SankeyDiagram(data)
-            .nodeOpacity(0.9)
             .linkColorMode(.gradient)
             .padding(10)
             .frame(height: 350)
@@ -45,92 +40,58 @@ struct QuickStartView: View {
 }
 
 #Preview {
-    QuickstartView()
+    QuickStartView()
 }
 ```
 
+Find more examples in the [Demo app](Demo/Demo.xcodeproj)
+
 #### Installation
 
-Add `Sankey` to your project using Swift Package Manager:
-
-1. In Xcode, select your project in the Project Navigator
-2. Navigate to Package Dependencies
-3. Click the + button
-4. Enter the repository URL: `https://github.com/maxhumber/Sankey`
+In Xcode: **File → Add Package Dependencies…** and enter `https://github.com/maxhumber/Sankey`
 
 #### Usage
 
 Customize `SankeyDiagram` with simple modifiers:
 
 ```swift
-struct UsageExampleView: View {
-    let data = SankeyData(
-        nodes: [
-            SankeyNode("Design", color: .blue),
-            SankeyNode("Development", color: .green),
-            SankeyNode("Testing", color: .orange),
-            SankeyNode("Frontend", color: .purple),
-            SankeyNode("Backend", color: .red),
-            SankeyNode("Mobile", label: "iOS"),
-            SankeyNode("Production", label: "Prod", color: .mint)
-        ],
-        links: [
-            SankeyLink(30, from: "Design", to: "Frontend", color: .blue),
-            SankeyLink(20, from: "Design", to: "Mobile", color: .blue),
-            SankeyLink(40, from: "Development", to: "Frontend", color: .green),
-            SankeyLink(60, from: "Development", to: "Backend", color: .green),
-            SankeyLink(30, from: "Development", to: "Mobile", color: .green),
-            SankeyLink(25, from: "Testing", to: "Frontend", color: .orange),
-            SankeyLink(35, from: "Testing", to: "Backend"),
-            SankeyLink(15, from: "Testing", to: "Mobile"),
-            SankeyLink(95, from: "Frontend", to: "Production", color: .purple),
-            SankeyLink(95, from: "Backend", to: "Production", color: .red),
-            SankeyLink(65, from: "Mobile", to: "Production", color: .yellow)
-        ]
-    )
-    
-    var body: some View {
-        SankeyDiagram(data)
-            // Node modifiers
-            .nodeAlignment(.justify)
-            .nodeWidth(15)
-            .nodePadding(20)
-            .nodeDefaultColor(.gray)
-            .nodeOpacity(0.8)
-            // Link modifiers
-            .linkDefaultColor(.gray)
-            .linkOpacity(0.7)
-            .linkColorMode(nil)
-            // Label modifiers
-            .labelPadding(8)
-            .labelColor(.primary)
-            .labelOpacity(0.9)
-            .labelFontSize(14)
-            .labelFontFamily("Times")
-            // Normal view modifiers
-            .padding(10)
-            .frame(height: 400)
-    }
-}
-
-#Preview {
-    UsageExampleView()
-        .preferredColorScheme(.dark)
-}
+SankeyDiagram(data)
+    .nodeAlignment(.justify)
+    .nodeWidth(8)
+    .nodePadding(24)
+    .nodeDefaultColor(.gray.opacity(0.8))
+    .linkDefaultColor(.gray)
+    .linkOpacity(0.3)
+    .linkColorMode(.gradient)
+    .labelPadding(8)
+    .font(.body)
+    .frame(height: 320)
 ```
 
-<img src="Images/usage.png" alt="usage" width="200px"/>
+#### Selection
 
-Find more examples in the [Examples App](Examples/Examples/ExamplesApp.swift).
+Bind a node ID to enable selection and connected-flow highlighting:
 
-#### ⚠️ Version Compatibility
+```swift
+@State private var selectedNodeID: String?
 
-> **Note**: Version `2.0`+ uses D3 for rendering. For projects requiring the previous Google Charts implementation, use version `1.0`/`1.0.1` via SPM.
+SankeyDiagram(data)
+    .nodeSelection($selectedNodeID)
+```
 
-Key differences in `2.0`+:
-- Streamlined API
-- Improved color handling
-- Built-in dark mode support
-- Offline rendering!
+#### Migrating to 3.0
 
-For legacy implementation details, see the [v1.0.1 documentation](https://github.com/maxhumber/Sankey/blob/1.0.1/README.md#quickstart).
+3.0 requires Swift 6.4+ and iOS/macOS 27+ and has several important changes, notably:
+
+| 2.0 | 3.0 |
+|---|---|
+| `SankeyDiagram(_ links:, …)` | `SankeyDiagram(SankeyData(nodes:links:))` |
+| `SankeyLink(source:target:value:)`, `["A", "B", 5]` | `SankeyLink(5, from: "A", to: "B")` |
+| `.nodeOpacity(0.8)` | `.nodeDefaultColor(.gray.opacity(0.8))` |
+| `.labelColor(_:)`, `.labelOpacity(_:)` | `.foregroundStyle(_:)` |
+| `.labelFontSize(_:)`, `.labelFontFamily(_:)` | `.font(_:)` |
+| Nodes at 60% and labels at 80% opacity | Colors as given |
+| Duplicate node IDs, negative or non-finite values | "Diagram unavailable" |
+| `Encodable`, enum `rawValue` | Removed |
+
+Apply `.font` and `.foregroundStyle` after the Sankey modifiers.
