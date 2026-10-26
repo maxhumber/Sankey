@@ -1,226 +1,216 @@
-import SwiftUI
-import WebKit
+import OSLog
+public import SwiftUI
 
-public struct SankeyDiagram: UIViewRepresentable {
-    @Environment(\.colorScheme) private var colorScheme: ColorScheme
+private let logger = Logger(subsystem: "Sankey", category: "layout")
+
+/// A native SwiftUI Sankey diagram.
+///
+/// Style it with the modifiers below, then apply standard modifiers like `.frame` after them.
+/// Labels follow `.font`, `.foregroundStyle`, `.lineLimit` (default 1), and
+/// `.minimumScaleFactor`.
+public struct SankeyDiagram: View {
+    @Environment(\.lineLimit) private var lineLimit: Int?
+    @State private var size = CGSize.zero
+    @Binding private var selectedNodeID: String?
+    private var isSelectable = false
     public var data: SankeyData
     var options = SankeyOptions()
 
+    /// Creates a diagram. Nodes, links, or cycles that can't be laid out show
+    /// "Diagram unavailable".
     public init(_ data: SankeyData) {
         self.data = data
+        _selectedNodeID = .constant(nil)
     }
-    
-    public func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        webView.isOpaque = false
-        webView.scrollView.isScrollEnabled = false
-        loadHTML(webView)
-        return webView
+
+    public var body: some View {
+        let layout = layout
+        let highlight = layout?.highlight(selectedNodeID)
+        Canvas { context, _ in
+            if let layout, let highlight {
+                draw(layout, highlight: highlight, in: &context)
+            }
+        }
+        .accessibilityHidden(true)
+        .overlay { labels(for: layout, highlight: highlight) }
+        .onGeometryChange(for: CGSize.self) {
+            $0.size
+        } action: {
+            size = $0
+        }
+        .contentShape(.rect)
+        .gesture(
+            SpatialTapGesture().onEnded { select(layout?.node(at: $0.location)?.id) },
+            including: isSelectable ? .all : .subviews
+        )
+        .frame(idealWidth: 300, idealHeight: 300)
     }
-    
-    public func updateUIView(_ webView: WKWebView, context: Context) {
-        loadHTML(webView)
-    }
-    
+
     // MARK: - View Modifiers
-    
+
+    /// Binds the selected node ID and enables connected-flow highlighting.
+    public func nodeSelection(_ selection: Binding<String?>) -> SankeyDiagram {
+        var new = self
+        new._selectedNodeID = selection
+        new.isSelectable = true
+        return new
+    }
+
     /// Sets the horizontal alignment of nodes
     public func nodeAlignment(_ value: SankeyNodeAlignment) -> SankeyDiagram {
-        var new = self
-        new.options.nodeAlignment = value
-        return new
+        setting(\.nodeAlignment, value)
     }
-    
+
     /// Sets the width of nodes
     public func nodeWidth(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodeWidth = value
-        return new
+        setting(\.nodeWidth, value)
     }
-    
+
     /// Sets the vertical padding between nodes
     public func nodePadding(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodePadding = value
-        return new
+        setting(\.nodePadding, value)
     }
-    
+
     /// Sets the default color for nodes
     public func nodeDefaultColor(_ color: Color) -> SankeyDiagram {
-        var new = self
-        new.options.nodeDefaultColor = color
-        return new
+        setting(\.nodeDefaultColor, color)
     }
-    
-    /// Sets the opacity of nodes
-    public func nodeOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.nodeOpacity = value
-        return new
-    }
-    
+
     /// Sets the default color for links
     public func linkDefaultColor(_ color: Color) -> SankeyDiagram {
-        var new = self
-        new.options.linkDefaultColor = color
-        return new
+        setting(\.linkDefaultColor, color)
     }
-    
+
     /// Sets the opacity of links
     public func linkOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.linkOpacity = value
-        return new
+        setting(\.linkOpacity, value)
     }
-    
+
     /// Sets how link colors are determined
     public func linkColorMode(_ value: SankeyLinkColorMode?) -> SankeyDiagram {
-        var new = self
-        new.options.linkColorMode = value
-        return new
+        setting(\.linkColorMode, value)
     }
-    
+
     /// Sets the padding between nodes and labels
     public func labelPadding(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelPadding = value
-        return new
+        setting(\.labelPadding, value)
     }
-    
-    /// Sets the color of labels
-    public func labelColor(_ color: Color) -> SankeyDiagram {
-        var new = self
-        new.options.labelColor = color
-        return new
+
+    // MARK: - Drawing
+
+    @ContentBuilder
+    private func labels(
+        for layout: SankeyLayout?, highlight: SankeyLayout.Highlight?
+    ) -> some View {
+        if let layout, let highlight {
+            ZStack {
+                ForEach(layout.nodes) { node in
+                    label(for: node, in: layout, highlight: highlight)
+                }
+            }
+        } else if canDraw {
+            Text("Diagram unavailable")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
-    
-    /// Sets the opacity of labels
-    public func labelOpacity(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelOpacity = value
-        return new
+
+    @ContentBuilder
+    private func label(
+        for node: SankeyLayout.Node, in layout: SankeyLayout, highlight: SankeyLayout.Highlight
+    ) -> some View {
+        let isSelected = (highlight.id == node.id)
+        Text(node.label ?? node.id)
+            .opacity(highlight.isLit(node) ? 1 : 0.32)
+            .lineLimit(lineLimit ?? 1)
+            .multilineTextAlignment(layout.isLeading(node) ? .leading : .trailing)
+            .help(node.label ?? node.id)
+            .gesture(
+                TapGesture().onEnded { select(node.id) },
+                including: isSelectable ? .all : .subviews
+            )
+            .frame(
+                width: layout.labelWidth,
+                alignment: layout.isLeading(node) ? .leading : .trailing
+            )
+            .position(layout.labelCenter(for: node))
+            .accessibilityAddTraits(isSelectable ? .isButton : [])
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .accessibilityAction { select(node.id) }
     }
-    
-    /// Sets the font size of labels
-    public func labelFontSize(_ value: Double) -> SankeyDiagram {
-        var new = self
-        new.options.labelFontSize = value
-        return new
+
+    private func draw(
+        _ layout: SankeyLayout,
+        highlight: SankeyLayout.Highlight,
+        in context: inout GraphicsContext
+    ) {
+        for link in layout.links {
+            context.opacity = options.linkOpacity * (highlight.touches(link) ? 1 : 0.16)
+            context.stroke(
+                layout.path(for: link),
+                with: shading(for: link, in: layout),
+                style: StrokeStyle(lineWidth: max(1, link.width))
+            )
+        }
+        for node in layout.nodes {
+            context.opacity = highlight.isLit(node) ? 1 : 0.24
+            context.fill(Path(node.rect), with: .color(color(of: node)))
+        }
     }
-    
-    /// Sets the font family of labels
-    public func labelFontFamily(_ value: String) -> SankeyDiagram {
+
+    private func shading(
+        for link: SankeyLayout.Link, in layout: SankeyLayout
+    ) -> GraphicsContext.Shading {
+        let source = layout.nodes[link.source]
+        let target = layout.nodes[link.target]
+        switch options.linkColorMode {
+        case .source:
+            return .color(color(of: source))
+        case .target:
+            return .color(color(of: target))
+        case .gradient:
+            return .linearGradient(
+                Gradient(colors: [color(of: source), color(of: target)]),
+                startPoint: CGPoint(x: source.x1, y: 0),
+                endPoint: CGPoint(x: target.x0, y: 0)
+            )
+        case nil:
+            return .color(link.color ?? options.linkDefaultColor)
+        }
+    }
+
+    // MARK: - Computed Values
+
+    private var canDraw: Bool {
+        !data.nodes.isEmpty && (size.width > 0) && (size.height > 0)
+    }
+
+    private var layout: SankeyLayout? {
+        guard canDraw, !data.links.isEmpty else { return nil }
+        do {
+            return try SankeyLayout(data, options: options, size: size)
+        } catch {
+            logger.error("Sankey diagram unavailable: \(String(describing: error))")
+            return nil
+        }
+    }
+
+    // MARK: - Private Functions
+
+    private func setting<Value>(
+        _ keyPath: WritableKeyPath<SankeyOptions, Value>, _ value: Value
+    ) -> SankeyDiagram {
         var new = self
-        new.options.labelFontFamily = value
+        new.options[keyPath: keyPath] = value
         return new
     }
 
-    // MARK: - Private Implementation Details
-    
-    private func loadHTML(_ webView: WKWebView) {
-        webView.loadHTMLString(generateHTML(), baseURL: nil)
+    private func select(_ id: String?) {
+        guard isSelectable else { return }
+        selectedNodeID = (id == selectedNodeID) ? nil : id
     }
 
-    private func generateHTML() -> String {
-        """
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body { margin: 0; }
-                svg { width: 100%; height: 100%; }
-            </style>
-        </head>
-        <body>
-            <svg></svg>
-            <script>
-                \(SankeyResources.d3minjs)
-                \(SankeyResources.d3sankeyminjs)
-        
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                const isDark = \(colorScheme == .dark);
-        
-                const svg = d3.select("svg")
-                    .attr("width", width)
-                    .attr("height", height);
-        
-                const sankey = d3.sankey()
-                    .nodeId(d => d.id)
-                    .nodeWidth(\(options.nodeWidth))
-                    .nodePadding(\(options.nodePadding))
-                    .nodeAlign(d3.sankey\(options.nodeAlignment.rawValue))
-                    .size([width, height]);
-        
-                const { nodes, links } = sankey(\(data));
-        
-                const defaultNodeColor = "\(options.nodeDefaultColor.hex(for: colorScheme))";
-                const defaultLinkColor = "\(options.linkDefaultColor.hex(for: colorScheme))";
-        
-                const getColor = (colorData, fallback) =>
-                    colorData ? (isDark ? colorData.dark : colorData.light) : fallback;
-        
-                const getLinkColor = link => {
-                    const mode = "\(options.linkColorMode?.rawValue ?? "")";
-                    if (!mode) return getColor(link.hex, defaultLinkColor);
-        
-                    const sourceColor = getColor(link.source.hex, defaultNodeColor);
-                    const targetColor = getColor(link.target.hex, defaultNodeColor);
-        
-                    if (mode === "source") return sourceColor;
-                    if (mode === "target") return targetColor;
-                    if (mode === "source-target") {
-                        const gradientId = `gradient-${link.index}`;
-                        const gradient = svg.append("defs")
-                            .append("linearGradient")
-                            .attr("id", gradientId)
-                            .attr("gradientUnits", "userSpaceOnUse")
-                            .attr("x1", link.source.x1)
-                            .attr("x2", link.target.x0);
-                        gradient.append("stop").attr("offset", "0%").attr("stop-color", sourceColor);
-                        gradient.append("stop").attr("offset", "100%").attr("stop-color", targetColor);
-                        return `url(#${gradientId})`;
-                    }
-                    return defaultLinkColor;
-                };
-        
-                const link = svg.append("g")
-                    .attr("fill", "none")
-                    .selectAll(".link")
-                    .data(links)
-                    .enter().append("path")
-                    .attr("class", "link")
-                    .attr("d", d3.sankeyLinkHorizontal())
-                    .style("stroke", getLinkColor)
-                    .style("stroke-opacity", \(options.linkOpacity))
-                    .style("stroke-width", link => Math.max(1, link.width));
-        
-                const node = svg.append("g")
-                    .selectAll(".node")
-                    .data(nodes)
-                    .enter().append("g")
-                    .attr("class", "node");
-        
-                node.append("rect")
-                    .attr("x", d => d.x0).attr("y", d => d.y0)
-                    .attr("width", d => d.x1 - d.x0).attr("height", d => d.y1 - d.y0)
-                    .style("fill", d => getColor(d.hex, defaultNodeColor))
-                    .style("opacity", \(options.nodeOpacity))
-                    .style("stroke", d => getColor(d.hex, defaultNodeColor))
-                    .style("stroke-opacity", \(options.nodeOpacity))
-                    .style("stroke-width", 0);
-        
-                node.append("text")
-                    .attr("font-family", "\(options.labelFontFamily)")
-                    .attr("font-size", \(options.labelFontSize))
-                    .attr("fill", isDark ? "\(options.labelColor.dark.hex)" : "\(options.labelColor.light.hex)")
-                    .style("opacity", \(options.labelOpacity))
-                    .attr("x", d => d.x0 < width / 2 ? d.x1 + \(options.labelPadding) : d.x0 - \(options.labelPadding))
-                    .attr("y", d => (d.y1 + d.y0) / 2)
-                    .attr("dy", "0.35em")
-                    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
-                    .text(d => d.label || d.id);
-            </script>
-        </body>
-        """
+    private func color(of node: SankeyLayout.Node) -> Color {
+        node.color ?? options.nodeDefaultColor
     }
 }
