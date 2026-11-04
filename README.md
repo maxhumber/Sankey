@@ -2,7 +2,7 @@
 
 #### About
 
-Native Sankey diagrams in SwiftUI
+Native Sankey diagrams in SwiftUI.
 
 #### Quickstart
 
@@ -10,38 +10,28 @@ Native Sankey diagrams in SwiftUI
 
 ```swift
 import Sankey
-import SwiftUI
 
-struct QuickStartView: View {
-    let data = SankeyData(
-        nodes: [
-            SankeyNode("A", color: .blue),
-            SankeyNode("B", color: .purple),
-            SankeyNode("X", color: .red),
-            SankeyNode("Y", color: .yellow),
-            SankeyNode("Z", color: .green),
-        ],
-        links: [
-            SankeyLink(5, from: "A", to: "X"),
-            SankeyLink(7, from: "A", to: "Y"),
-            SankeyLink(6, from: "A", to: "Z"),
-            SankeyLink(2, from: "B", to: "X"),
-            SankeyLink(9, from: "B", to: "Y"),
-            SankeyLink(4, from: "B", to: "Z"),
-        ]
-    )
-    
-    var body: some View {
-        SankeyDiagram(data)
-            .linkColorMode(.gradient)
-            .padding(10)
-            .frame(height: 350)
-    }
-}
+let data = SankeyData(
+    nodes: [
+        SankeyNode("A", color: .blue),
+        SankeyNode("B", color: .purple),
+        SankeyNode("X", color: .red),
+        SankeyNode("Y", color: .yellow),
+        SankeyNode("Z", color: .green),
+    ],
+    links: [
+        SankeyLink(5, from: "A", to: "X"),
+        SankeyLink(7, from: "A", to: "Y"),
+        SankeyLink(6, from: "A", to: "Z"),
+        SankeyLink(2, from: "B", to: "X"),
+        SankeyLink(9, from: "B", to: "Y"),
+        SankeyLink(4, from: "B", to: "Z"),
+    ]
+)
 
-#Preview {
-    QuickStartView()
-}
+SankeyDiagram(data)
+    .linkColorMode(.gradient)
+    .frame(height: 350)
 ```
 
 Find more examples in the [Demo app](Demo/Demo.xcodeproj)
@@ -49,6 +39,12 @@ Find more examples in the [Demo app](Demo/Demo.xcodeproj)
 #### Installation
 
 In Xcode: **File → Add Package Dependencies…** and enter `https://github.com/maxhumber/Sankey`
+
+Or in `Package.swift`:
+
+```swift
+.package(url: "https://github.com/maxhumber/Sankey", from: "3.0.0")
+```
 
 #### Usage
 
@@ -68,6 +64,8 @@ SankeyDiagram(data)
     .frame(height: 320)
 ```
 
+Apply `.font` and `.foregroundStyle` after the Sankey modifiers.
+
 #### Selection
 
 Bind a node ID to enable selection and connected-flow highlighting:
@@ -81,7 +79,7 @@ SankeyDiagram(data)
 
 #### Migrating to 3.0
 
-3.0 requires Swift 6.4+ and iOS/macOS 27+ and has several important changes, notably:
+[3.0](https://github.com/maxhumber/Sankey/releases/tag/3.0.0) is a native rewrite. Breaking changes:
 
 | 2.0 | 3.0 |
 |---|---|
@@ -93,5 +91,3 @@ SankeyDiagram(data)
 | Nodes at 60% and labels at 80% opacity | Colors as given |
 | Duplicate node IDs, negative or non-finite values | "Diagram unavailable" |
 | `Encodable`, enum `rawValue` | Removed |
-
-Apply `.font` and `.foregroundStyle` after the Sankey modifiers.
